@@ -1,7 +1,7 @@
 schema_version: '0.3'
 buildstock_directory: ../  # Relative to this file or absolute
 project_directory: project_national  # Relative to buildstock_directory
-output_directory: /projects/enduse/resstock_runs/resstock_hpxml_baseline_2018
+output_directory: /projects/enduse/resstock-hpxml/resstock_hpxml_baseline_2018_5k
 weather_files_path: /shared-projects/buildstock/weather/BuildStock_2018_FIPS.zip  # Relative to this file or absolute path to zipped weather files
 
 baseline:
@@ -10,13 +10,13 @@ baseline:
 sampler:
   type: residential_quota
   args:
-    n_datapoints: 550000
+    n_datapoints: 5000
 
 workflow_generator:
   type: residential_default
   args:
     residential_simulation_controls:
-      timesteps_per_hr: 4
+      timesteps_per_hr: 6
       begin_month: 1
       begin_day_of_month: 1
       end_month: 12
@@ -29,14 +29,14 @@ workflow_generator:
       - measure_dir_name: QOIReport
 
 eagle:
-  n_jobs: 200
+  n_jobs: 20
   minutes_per_sim: 3
   account: enduse
   sampling:
     time: 60  
   postprocessing:
-    time: 1439 
-    n_workers: 32
+    time: 30 #1439 
+    n_workers: 1 #32
 
 postprocessing:
   aws:
