@@ -686,9 +686,9 @@ Water Heater Fuel	Other Fuel
 Water Heater Fuel	Propane																																														
 Water Heater Efficiency	Electric Benchmark	ResidentialHotWaterHeaterTank	fuel_type=electric	tank_volume=auto	setpoint_temp=125	location=auto	capacity=auto	energy_factor=auto	recovery_efficiency=0.98	offcyc_power=0	oncyc_power=0	has_water_heater_flue=false	setpoint_type=constant	schedules_directory=./resources	tank_model_type=mixed	setpoint_schedule=hourly_setpoint_schedule.csv																															
 		ResidentialAirflow																																													
-Water Heater Efficiency	Electric Standard	ResidentialHotWaterHeaterTank	fuel_type=electric	tank_volume=auto	setpoint_temp=125	location=auto	capacity=4.5	energy_factor=0.92	recovery_efficiency=0.98	offcyc_power=0	oncyc_power=0	has_water_heater_flue=false	setpoint_type=constant	schedules_directory=./resources	tank_model_type=mixed	setpoint_schedule=hourly_setpoint_schedule.csv																															
+Water Heater Efficiency	Electric Standard	ResidentialHotWaterHeaterTank	fuel_type=electric	tank_volume=auto	setpoint_temp=125	location=auto	capacity=auto	energy_factor=0.92	recovery_efficiency=0.98	offcyc_power=0	oncyc_power=0	has_water_heater_flue=false	setpoint_type=constant	schedules_directory=./resources	tank_model_type=mixed	setpoint_schedule=hourly_setpoint_schedule.csv																															
 		ResidentialAirflow																																													
-Water Heater Efficiency	Electric Premium	ResidentialHotWaterHeaterTank	fuel_type=electric	tank_volume=auto	setpoint_temp=125	location=auto	capacity=5.5	energy_factor=0.95	recovery_efficiency=0.98	offcyc_power=0	oncyc_power=0	has_water_heater_flue=false	setpoint_type=constant	schedules_directory=./resources	tank_model_type=mixed	setpoint_schedule=hourly_setpoint_schedule.csv																															
+Water Heater Efficiency	Electric Premium	ResidentialHotWaterHeaterTank	fuel_type=electric	tank_volume=auto	setpoint_temp=125	location=auto	capacity=auto	energy_factor=0.95	recovery_efficiency=0.98	offcyc_power=0	oncyc_power=0	has_water_heater_flue=false	setpoint_type=constant	schedules_directory=./resources	tank_model_type=mixed	setpoint_schedule=hourly_setpoint_schedule.csv																															
 		ResidentialAirflow																																													
 Water Heater Efficiency	Electric Tankless	ResidentialHotWaterHeaterTankless	fuel_type=electric	setpoint_temp=125	location=auto	capacity=100000000	energy_factor=0.99	cycling_derate=0.08	offcyc_power=0	oncyc_power=0	has_water_heater_flue=false																																				
 		ResidentialAirflow																																													
@@ -7362,3 +7362,23 @@ REEDS Balancing Area	131
 REEDS Balancing Area	132																																														
 REEDS Balancing Area	133																																														
 REEDS Balancing Area	134																																														
+Generation And Emissions Assessment Region	AZNMc																																														
+Generation And Emissions Assessment Region	CAMXc																																														
+Generation And Emissions Assessment Region	ERCTc																																														
+Generation And Emissions Assessment Region	FRCCc																																														
+Generation And Emissions Assessment Region	MROEc																																														
+Generation And Emissions Assessment Region	MROWc																																														
+Generation And Emissions Assessment Region	NEWEc																																														
+Generation And Emissions Assessment Region	NWPPc																																														
+Generation And Emissions Assessment Region	NYSTc																																														
+Generation And Emissions Assessment Region	RFCEc																																														
+Generation And Emissions Assessment Region	RFCMc																																														
+Generation And Emissions Assessment Region	RFCWc																																														
+Generation And Emissions Assessment Region	RMPAc																																														
+Generation And Emissions Assessment Region	SPNOc																																														
+Generation And Emissions Assessment Region	SPSOc																																														
+Generation And Emissions Assessment Region	SRMVc																																														
+Generation And Emissions Assessment Region	SRMWc																																														
+Generation And Emissions Assessment Region	SRSOc																																														
+Generation And Emissions Assessment Region	SRTVc																																														
+Generation And Emissions Assessment Region	SRVCc																																														
