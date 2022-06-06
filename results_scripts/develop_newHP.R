@@ -3,7 +3,8 @@ cat("\014") # clear console
 library(dplyr)
 library(reshape2)
 library(ggplot2)
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/results_scripts")
+# set working directory to where the results_scripts folder exists
+setwd("~/projects/Yale/resstock_projections/results_scripts/")
 
 # Last Update Peter Berrill May 6 2022
 
@@ -18,7 +19,7 @@ setwd("~/Yale Courses/Research/Final Paper/resstock_projections/results_scripts"
 #         - none, just create some figures
 
 
-load("../Intermediate_results/rs_base_EG.RData")
+load("../LF_Data/Intermediate_results/rs_base_EG.RData")
 
 # growth of new housing stock
 colSums((rs_base$base_weight*rs_base[,c("wbase_2020",  "wbase_2025", "wbase_2030", "wbase_2035", "wbase_2040", "wbase_2045", "wbase_2050", "wbase_2055", "wbase_2060")]))
@@ -40,7 +41,7 @@ nhs$HP_Rep<-0
 nhs$HP_Rep[6:8]<-nhs$HP_Units[1:3]
 nhs$HP_NC_Tot<-nhs$HP_Units+nhs$HP_Rep
 
-load("../Intermediate_results/rs_baseDE_EG.RData")
+load("../LF_Data/Intermediate_results/rs_baseDE_EG.RData")
 
 # stock of new housing by year
 nhs_de<-data.frame(Year=seq(2025,2060,5),Units=0,HP_Units=0)
@@ -58,7 +59,7 @@ nhs_de$HP_Rep[6:8]<-nhs_de$HP_Units[1:3]
 nhs_de$HP_NC_Tot<-nhs_de$HP_Units+nhs_de$HP_Rep
 
 # now calculate how many HP to be installed in renovations, in both RR and ER scenarios
-load('../Intermediate_results/RenStandard_EG.RData')
+load('../LF_Data/Intermediate_results/RenStandard_EG.RData')
 
 nhp_rr<-data.frame(Year=seq(2025,2060,5),RenUnits=0,HP_RenUnits=0)
 
@@ -71,7 +72,7 @@ for (y in seq(2025,2060,5)) {
 }
 
 # and now for the ER scenario
-load('../Intermediate_results/RenExtElec_EG.RData')
+load('../LF_Data/Intermediate_results/RenExtElec_EG.RData')
 
 
 nhp_er<-data.frame(Year=seq(2025,2060,5),RenUnits=0,HP_RenUnits=0)

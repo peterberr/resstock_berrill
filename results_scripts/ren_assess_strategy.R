@@ -27,7 +27,7 @@ library(writexl)
          # - Final_results/ren_strat_summ.RData
          # - Final_results/ren_NPV.RData (large file in the LF_Data/ folder)
          # - Final_results/ren_div_sum.csv
-         # - Final_results/ren_NPV.xlsx (slimmed down version of the RData file, but saved as an excel file)
+         # - Figure_Results_Data/ren_NPV.xlsx (slimmed down version of the RData file, but saved as an excel file)
 
 load("../LF_Data/Intermediate_results/RenStandard_EG.RData")
 

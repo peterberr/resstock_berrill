@@ -54,7 +54,7 @@ library(openxlsx)
 #         - Final_results/supp_Tab4.csv
 #         - Final_results/GHGall.RData
 #         - Final_results/GHG_Source.RData
-#         - Figure data in csv files, in Figure_Results_Data, for Fig1, Fig3, FigS31
+#         - Figure data in csv files, in Figure_Results_Data/, for Fig1, Fig3, FigS31
 #         - many figure files which need manually saved
 
 

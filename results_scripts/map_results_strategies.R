@@ -1,6 +1,7 @@
 rm(list=ls()) # clear workspace i.e. remove saved variables
 cat("\014") # clear console
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/results_scripts")
+# set working directory to where the results_scripts folder exists
+setwd("~/projects/Yale/resstock_projections/results_scripts/")
 
 # Last Update Peter Berrill May 8 2022
 
@@ -55,7 +56,6 @@ check_hiMF$County
 
 # don't include these counties
 filter<-cty_assess[cty_assess$best %in% c('hiDR','hiMF') & !(cty_assess$County %in% check_hiMF$County | cty_assess$County %in% check_hiDR$County),]
-
 
 cty_assess$priority3<-cty_assess$best3<-NA
 str_group<-str_sub(c('abs_redn_ER','abs_redn_hiDR','abs_redn_hiMF','abs_redn_DERFA'),10)
@@ -183,7 +183,7 @@ ggplot() +
   theme(legend.title = element_text(size = 12),legend.text = element_text(size = 12),legend.key.size = unit(2,"line"),plot.title = element_text(hjust = 0.5,size=16)) 
 
 ER_eg<-cty_assess[cty_assess$pc_redn_ER>0.3 & cty_assess$abs_redn_ER>5,]
-write.csv(vars,'../Figures/Spatial/ER.csv',row.names = FALSE)
+write.csv(vars,'../Figure_Results_Data/Fig4a.csv',row.names = FALSE)
 
 # LRE
 vars<-st_assess[,c('State','abs_redn_LRE','pc_redn_LRE')]
@@ -207,7 +207,7 @@ ggplot() +
   ggtitle("b) Absolute reduction of Cumulative Residential GHG 2020-2060, LREC") +
   theme(legend.title = element_text(size = 12),legend.text = element_text(size = 12),legend.key.size = unit(2,"line"),plot.title = element_text(hjust = 0.5,size=16))  
 LRE_eg<-cty_assess[cty_assess$pc_redn_LRE>0.3 & cty_assess$abs_redn_LRE>5,]
-write.csv(vars,'../Figures/Spatial/LRE.csv',row.names = FALSE)
+write.csv(vars,'../Figure_Results_Data/Fig4b.csv',row.names = FALSE)
 
 # hiDR
 vars<-st_assess[,c('State','abs_redn_hiDR','pc_redn_hiDR')]
@@ -231,14 +231,13 @@ ggplot() +
   labs(fill = "Mt") + scale_fill_viridis_c(option = "viridis") + 
   ggtitle("e) Absolute reduction of Cumulative Residential GHG 2020-2060, hiTO") +
   theme(legend.title = element_text(size = 12),legend.text = element_text(size = 12),legend.key.size = unit(2,"line"),plot.title = element_text(hjust = 0.5,size=16))  
-
-write.csv(vars,'../Figures/Spatial/hiDR.csv',row.names = FALSE)
-write.csv(vars2,'../Figures/Spatial/hiDR2.csv',row.names = FALSE)
+names(vars)[2:3]<-c("abs_redn_hiTO", "pc_redn_hiTO")
+write.csv(vars,'../Figure_Results_Data/FigS32a.csv',row.names = FALSE)
 
 # hiMF
 vars<-st_assess[,c('State','abs_redn_hiMF','pc_redn_hiMF')]
 map_data<-right_join(states_sf,vars,by = c("state_abbv" ="State"))
-
+# Fig 4d
 windows()
 ggplot() +
   geom_sf(map_data,mapping = aes(fill = 100*pc_redn_hiMF)) + coord_sf(datum = NA) +
@@ -257,7 +256,7 @@ ggplot() +
   ggtitle("d) Absolute reduction of Cumulative Residential GHG 2020-2060, hiMF") +
   theme(legend.title = element_text(size = 12),legend.text = element_text(size = 12),legend.key.size = unit(2,"line"),plot.title = element_text(hjust = 0.5,size=16))  
 
-write.csv(vars,'../Figures/Spatial/hiMF.csv',row.names = FALSE)
+write.csv(vars,'../Figure_Results_Data/Fig4d.csv',row.names = FALSE)
 
 # hiMF by county
 vars<-cty_assess[!cty_assess$County %in% filter$County ,c('County','abs_redn_hiMF','pc_redn_hiMF','best','GeoID')]
@@ -286,7 +285,7 @@ hiMF_eg<-vars[vars$abs_redn_hiMF>1 & vars$pc_redn_hiMF>0.09,]
 # DERFA
 vars<-st_assess[,c('State','abs_redn_DERFA','pc_redn_DERFA')]
 map_data<-right_join(states_sf,vars,by = c("state_abbv" ="State"))
-
+# Fig 4c
 windows()
 ggplot() +
   geom_sf(map_data,mapping = aes(fill = 100*pc_redn_DERFA)) + coord_sf(datum = NA) +
@@ -304,8 +303,8 @@ ggplot() +
   labs(fill = "Mt") + scale_fill_viridis_c(option = "viridis") + 
   ggtitle("c) Absolute reduction of Cumulative Residential GHG 2020-2060, DERFA") +
   theme(legend.title = element_text(size = 12),legend.text = element_text(size = 12),legend.key.size = unit(2,"line"),plot.title = element_text(hjust = 0.5,size=16))  
-
-write.csv(vars,'../Figures/Spatial/DERFA.csv',row.names = FALSE)
+names(vars[2:3])<-c('abs_redn_IERFA','pc_redn_IERFA')
+write.csv(vars,'../Figure_Results_Data/Fig4c.csv',row.names = FALSE)
 
 # DERFA by county
 vars<-cty_assess[!cty_assess$County %in% filter$County ,c('County','abs_redn_DERFA','pc_redn_DERFA','best','GeoID')]
@@ -351,8 +350,7 @@ ggplot() +
   ggtitle("f) Absolute reduction, Cumulative Residential GHG 2020-2060, ER & LREC") +
   theme(legend.title = element_text(size = 12),legend.text = element_text(size = 12),legend.key.size = unit(2,"line"),plot.title = element_text(hjust = 0.5,size=16))  
 
-write.csv(vars,'../Figures/Spatial/ER_LRE.csv',row.names = FALSE)
-
+write.csv(vars,'../Figure_Results_Data/FigS32b.csv',row.names = FALSE)
 
 # now map the balancing areas by county
 map[map$geoid10=='46113',c('geoid10','county','RS_ID')]<-c('46102','Oglala Lakota','SD, Oglala Lakota County')
@@ -393,9 +391,8 @@ ggplot() +
 gea_LREC<-unique(merge(gicty_gea_LREC,vars[,c('geoid10','gea')],by='geoid10')[,2:4])
 gea_MC<-unique(merge(gicty_gea,vars[,c('geoid10','gea')],by='geoid10')[,2:4])
 
-write.csv(gea_LREC,'../Figures/Grid/gea_LREC.csv',row.names = FALSE)
-write.csv(gea_MC,'../Figures/Grid/gea_MC.csv',row.names = FALSE)
-
+write.csv(gea_LREC,'../Figure_Results_Data/FigS25b.csv',row.names = FALSE)
+write.csv(gea_MC,'../Figure_Results_Data/FigS25a.csv',row.names = FALSE)
 
 geas<-sort(unique(gea_LREC$gea))
 
@@ -458,5 +455,3 @@ vars<-merge(vars,ghgi_gea20[,c('geoid10','GHG_int')])
 names(vars)[12]<-'GHG_int_2020'
 vars<-merge(vars,ghgi_gea50[,c('geoid10','GHG_int')])
 names(vars)[13]<-'GHG_int_2050'
-
-write.csv(vars,'../Figures/Grid/LRE_redn.csv',row.names = FALSE)

@@ -1,7 +1,8 @@
 rm(list=ls()) # clear workspace
 cat("\014") # clear console
 graphics.off() # remove graphics windows
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/results_scripts")
+# set working directory to where the results_scripts folder exists
+setwd("~/projects/Yale/resstock_projections/results_scripts/")
 library(dplyr)
 library(ggplot2)
 library(reshape2)
