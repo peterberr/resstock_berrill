@@ -1,21 +1,21 @@
 rm(list=ls()) # clear workspace i.e. remove saved variables
 cat("\014") # clear console
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/results_scripts")
+# define path to 'results_scripts'
+setwd("~/projects/Yale/resstock_projections/results_scripts")
 library(ggplot2)
 library(dplyr)
 library(reshape2)
 library(stringr)
+library(writexl)
 
 # Last Update Peter Berrill May 6 2022
 
 # Purpose: Test the benefits of individual renovation strategies in different scenarios. Make environmental-economic cost-benefit analysis of renovation strategies
 
-# Inputs: - Intermediate_results/RenStandard_EG.RData
-#         - Intermediate_results/RenAdvanced_EG.RData
-#         - Intermediate_results/RenExtElec_EG.RData
-#         - ExtData/CBA_prices/MT.csv
-#         - ExtData/CBA_prices/ESC.csv
-#         - etc., fuel prices by division
+# Inputs: - Intermediate_results/RenStandard_EG.RData (large file in the LF_Data/ folder)
+#         - Intermediate_results/RenAdvanced_EG.RData (large file in the LF_Data/ folder)
+#         - Intermediate_results/RenExtElec_EG.RData (large file in the LF_Data/ folder)
+#         - ExtData/CBA_prices/* fuel prices by division
 #         - ExtData/CapExHeat.csv
 #         - ExtData/CapExDHW.csv
 #         - ExtData/CapExIns.csv
@@ -25,10 +25,11 @@ library(stringr)
          # - Final_results/ren_strat_comp.RData
          # - Final_results/ren_strat_comp.xlsx
          # - Final_results/ren_strat_summ.RData
-         # - Final_results/ren_NPV.RData
+         # - Final_results/ren_NPV.RData (large file in the LF_Data/ folder)
          # - Final_results/ren_div_sum.csv
+         # - Final_results/ren_NPV.xlsx (slimmed down version of the RData file, but saved as an excel file)
 
-load("../Intermediate_results/RenStandard_EG.RData")
+load("../LF_Data/Intermediate_results/RenStandard_EG.RData")
 
 # tot GHG reductions per renovation, base, in kg
 rs_RRn[,c("redGHGren_base_2025","redGHGren_base_2030","redGHGren_base_2035","redGHGren_base_2040","redGHGren_base_2045","redGHGren_base_2050","redGHGren_base_2055","redGHGren_base_2060")]<-1000*
@@ -609,7 +610,7 @@ heat_env_comp_RR<-strat_comp(npv_heat_env_RRr,div_rr_heat_env)
 
 # now repeat from beginning for AR ########
 
-load("../Intermediate_results/RenAdvanced_EG.RData")
+load("../LF_Data/Intermediate_results/RenAdvanced_EG.RData")
 
 # # tot GHG reductions per renovation, base, in kg
 rs_ARn[,c("redGHGren_base_2025","redGHGren_base_2030","redGHGren_base_2035","redGHGren_base_2040","redGHGren_base_2045","redGHGren_base_2050","redGHGren_base_2055","redGHGren_base_2060")]<-1000*
@@ -745,7 +746,7 @@ heat_env_comp_AR<-strat_comp(npv_heat_env_ARr,div_ar_heat_env)
 
 # rm(check,check2,df,df0,df1,dfsc,dfsc2,dfsc3,str_ren,unall)
 # now repeat for ER ########
-load("../Intermediate_results/RenExtElec_EG.RData")
+load("../LF_Data/Intermediate_results/RenExtElec_EG.RData")
 
 # # tot GHG reductions per renovation, base, in kg
 rs_ERn[,c("redGHGren_base_2025","redGHGren_base_2030","redGHGren_base_2035","redGHGren_base_2040","redGHGren_base_2045","redGHGren_base_2050","redGHGren_base_2055","redGHGren_base_2060")]<-1000*
@@ -885,8 +886,6 @@ save(heat_comp_RR,dhw_comp_RR,env_comp_RR,heat_env_comp_RR,
      file='../Final_results/ren_strat_comp.RData')
 
 # also save as multiple tabs in an excel file
-library(writexl)
-
 write_xlsx(list(heat_comp_RR = heat_comp_RR, dhw_comp_RR = dhw_comp_RR, env_comp_RR = env_comp_RR,heat_env_comp_RR = heat_env_comp_RR,
                 heat_comp_AR = heat_comp_AR, dhw_comp_AR = dhw_comp_AR, env_comp_AR = env_comp_AR,heat_env_comp_AR = heat_env_comp_AR,
                 heat_comp_ER = heat_comp_ER, dhw_comp_ER = dhw_comp_ER, env_comp_ER = env_comp_ER,heat_env_comp_ER = heat_env_comp_ER),
@@ -904,6 +903,29 @@ save(npv_heat_RRr,npv_dhw_RRr,npv_env_RRr,npv_heat_env_RRr,
      npv_heat_ARr,npv_dhw_ARr,npv_env_ARr,npv_heat_env_ARr,
      npv_heat_ERr,npv_dhw_ERr,npv_env_ERr,npv_heat_env_ERr,
      file='../Final_results/ren_NPV.RData')
+
+# reduce the size of the npv files and save as xlsx
+npv_heat_RRr_mini<-npv_heat_RRr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_heat_ARr_mini<-npv_heat_ARr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_heat_ERr_mini<-npv_heat_ERr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+
+npv_dhw_RRr_mini<-npv_dhw_RRr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_dhw_ARr_mini<-npv_dhw_ARr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_dhw_ERr_mini<-npv_dhw_ERr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+
+npv_env_RRr_mini<-npv_env_RRr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_env_ARr_mini<-npv_env_ARr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_env_ERr_mini<-npv_env_ERr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+
+npv_heat_env_RRr_mini<-npv_heat_env_RRr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_heat_env_ARr_mini<-npv_heat_env_ARr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_heat_env_ERr_mini<-npv_heat_env_ERr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+
+write_xlsx(list(heat_npv_RR = npv_heat_RRr_mini, heat_npv_AR = npv_heat_ARr_mini, heat_npv_ER = npv_heat_ERr_mini,
+                dhw_npv_RR = npv_dhw_RRr_mini, dhw_npv_AR = npv_dhw_ARr_mini, dhw_npv_ER = npv_dhw_ERr_mini,
+                env_npv_RR = npv_env_RRr_mini, env_npv_AR = npv_env_ARr_mini, env_npv_ER = npv_env_ERr_mini,
+                heat_env_npv_RR = npv_heat_env_RRr_mini, heat_env_npv_AR = npv_heat_env_ARr_mini, heat_env_npv_ER = npv_heat_env_ERr_mini),
+           "../Figure_Results_Data/ren_npv.xlsx",format_headers = FALSE)
 
 
 # additional results aggregating and processing #######
@@ -982,8 +1004,9 @@ tda$Type<-rownames(tda)
 tdam<-melt(tda)
 names(tdam)[3]<-'AbateCost_USD_t'
 
+# write supp. Table 3, showing median GHG reductions, NPV, and implied abatement costs of renovation families, by census division.
 td<-merge(merge(tdgm,tdnm),tdam)
-write.csv(td,'../Final_results/ren_div_sum.csv')
+write.csv(td,'../Final_results/supp_Tab3.csv')
 
 hsd<-round(as.data.frame(tapply(heat_all$GHG_redn_cum_LRE,list(heat_all$Fuel_pre_post,heat_all$Census.Division),mean)),1)
 hsd$FuelSwitch<-rownames(hsd)

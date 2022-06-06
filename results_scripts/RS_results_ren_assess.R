@@ -12,15 +12,16 @@ cat("\014") # clear console
 #         - Intermediate_results/RenExtElec_EG.RData
 
 # Outputs: 
-#         - SI_Tables/heat_age_reg_rr.csv, ... , etc for cool, dhw, env and rr, ar, er
-#         - SI_Tables/heat_typ_age_rr.csv, ... , etc for cool, dhw, env and rr, ar, er
+#         - Figure_Results_Data/SI_Tables/heat_age_reg_rr.csv, ... , etc for cool, dhw, env and rr, ar, er
+#         - Figure_Results_Data/SI_Tables/heat_typ_age_rr.csv, ... , etc for cool, dhw, env and rr, ar, er
 
 library(dplyr)
 library(reshape2)
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/")
+# define path 
+setwd("~/projects/Yale/resstock_projections/")
 
 # regular renovations ###########
-load("Intermediate_results/RenStandard_EG.RData")
+load("LF_Data/Intermediate_results/RenStandard_EG.RData")
 # stockwide avg effects of individual retrofits
 tapply(rs_RRn$redn_cren,rs_RRn$change_cren_only,mean) # 0.14%
 tapply(rs_RRn$redn_iren,rs_RRn$change_iren_only,mean) # 13.9%
@@ -40,7 +41,7 @@ tapply(rs_RRn$redn_wren,list(rs_RRn$change_wren_only,rs_RRn$Vintage), mean) # re
 tapply(rs_RRn$redn_hren,list(rs_RRn$change_hren_only,rs_RRn$Vintage), mean) # highest in older homes (>8%)
 
 # advanced renovations ############
-load("Intermediate_results/RenAdvanced_EG.RData")
+load("LF_Data/Intermediate_results/RenAdvanced_EG.RData")
 # stockwide avg effects of individual retrofits
 tapply(rs_ARn$redn_cren,rs_ARn$change_cren_only,mean) # 0.24%
 tapply(rs_ARn$redn_iren,rs_ARn$change_iren_only,mean) # 11.9%
@@ -60,7 +61,7 @@ tapply(rs_ARn$redn_wren,list(rs_ARn$change_wren_only,rs_ARn$Vintage), mean) # re
 tapply(rs_ARn$redn_hren,list(rs_ARn$change_hren_only,rs_ARn$Vintage), mean) # highest in older homes (12-13%)
 
 # extensive renovations ##########
-load("Intermediate_results/RenExtElec_EG.RData")
+load("LF_Data/Intermediate_results/RenExtElec_EG.RData")
 # stockwide avg effects of individual retrofits
 tapply(rs_ERn$redn_cren,rs_ERn$change_cren_only,mean) # 0.21%
 tapply(rs_ERn$redn_iren,rs_ERn$change_iren_only,mean) # 9.8%
@@ -128,38 +129,38 @@ ins_typ_age_er<-tapply(rs_ERn$redn_iren,list(rs_ERn$change_iren_only,rs_ERn$Geom
 
 # write tables ######
 # by age and region
-write.csv(round(100*heat_age_reg_rr,2),file="SI_Tables/heat_age_reg_rr.csv")
-write.csv(round(100*heat_age_reg_ar,2),file="SI_Tables/heat_age_reg_ar.csv")
-write.csv(round(100*heat_age_reg_er,2),file="SI_Tables/heat_age_reg_er.csv")
+write.csv(round(100*heat_age_reg_rr,2),file="Figure_Results_Data/SI_Tables/heat_age_reg_rr.csv")
+write.csv(round(100*heat_age_reg_ar,2),file="Figure_Results_Data/SI_Tables/heat_age_reg_ar.csv")
+write.csv(round(100*heat_age_reg_er,2),file="Figure_Results_Data/SI_Tables/heat_age_reg_er.csv")
 
-write.csv(round(100*cool_age_reg_rr,2),file="SI_Tables/cool_age_reg_rr.csv")
-write.csv(round(100*cool_age_reg_ar,2),file="SI_Tables/cool_age_reg_ar.csv")
-write.csv(round(100*cool_age_reg_er,2),file="SI_Tables/cool_age_reg_er.csv")
+write.csv(round(100*cool_age_reg_rr,2),file="Figure_Results_Data/SI_Tables/cool_age_reg_rr.csv")
+write.csv(round(100*cool_age_reg_ar,2),file="Figure_Results_Data/SI_Tables/cool_age_reg_ar.csv")
+write.csv(round(100*cool_age_reg_er,2),file="Figure_Results_Data/SI_Tables/cool_age_reg_er.csv")
 
-write.csv(round(100*dhw_age_reg_rr,2),file="SI_Tables/dhw_age_reg_rr.csv")
-write.csv(round(100*dhw_age_reg_ar,2),file="SI_Tables/dhw_age_reg_ar.csv")
-write.csv(round(100*dhw_age_reg_er,2),file="SI_Tables/dhw_age_reg_er.csv")
+write.csv(round(100*dhw_age_reg_rr,2),file="Figure_Results_Data/SI_Tables/dhw_age_reg_rr.csv")
+write.csv(round(100*dhw_age_reg_ar,2),file="Figure_Results_Data/SI_Tables/dhw_age_reg_ar.csv")
+write.csv(round(100*dhw_age_reg_er,2),file="Figure_Results_Data/SI_Tables/dhw_age_reg_er.csv")
 
-write.csv(round(100*ins_age_reg_rr,2),file="SI_Tables/env_age_reg_rr.csv")
-write.csv(round(100*ins_age_reg_ar,2),file="SI_Tables/env_age_reg_ar.csv")
-write.csv(round(100*ins_age_reg_er,2),file="SI_Tables/env_age_reg_er.csv")
+write.csv(round(100*ins_age_reg_rr,2),file="Figure_Results_Data/SI_Tables/env_age_reg_rr.csv")
+write.csv(round(100*ins_age_reg_ar,2),file="Figure_Results_Data/SI_Tables/env_age_reg_ar.csv")
+write.csv(round(100*ins_age_reg_er,2),file="Figure_Results_Data/SI_Tables/env_age_reg_er.csv")
 
 # by type and age
-write.csv(round(100*heat_typ_age_rr,2),file="SI_Tables/heat_typ_age_rr.csv")
-write.csv(round(100*heat_typ_age_ar,2),file="SI_Tables/heat_typ_age_ar.csv")
-write.csv(round(100*heat_typ_age_er,2),file="SI_Tables/heat_typ_age_er.csv")
+write.csv(round(100*heat_typ_age_rr,2),file="Figure_Results_Data/SI_Tables/heat_typ_age_rr.csv")
+write.csv(round(100*heat_typ_age_ar,2),file="Figure_Results_Data/SI_Tables/heat_typ_age_ar.csv")
+write.csv(round(100*heat_typ_age_er,2),file="Figure_Results_Data/SI_Tables/heat_typ_age_er.csv")
 
-write.csv(round(100*cool_typ_age_rr,2),file="SI_Tables/cool_typ_age_rr.csv")
-write.csv(round(100*cool_typ_age_ar,2),file="SI_Tables/cool_typ_age_ar.csv")
-write.csv(round(100*cool_typ_age_er,2),file="SI_Tables/cool_typ_age_er.csv")
+write.csv(round(100*cool_typ_age_rr,2),file="Figure_Results_Data/SI_Tables/cool_typ_age_rr.csv")
+write.csv(round(100*cool_typ_age_ar,2),file="Figure_Results_Data/SI_Tables/cool_typ_age_ar.csv")
+write.csv(round(100*cool_typ_age_er,2),file="Figure_Results_Data/SI_Tables/cool_typ_age_er.csv")
 
-write.csv(round(100*dhw_typ_age_rr,2),file="SI_Tables/dhw_typ_age_rr.csv")
-write.csv(round(100*dhw_typ_age_ar,2),file="SI_Tables/dhw_typ_age_ar.csv")
-write.csv(round(100*dhw_typ_age_er,2),file="SI_Tables/dhw_typ_age_er.csv")
+write.csv(round(100*dhw_typ_age_rr,2),file="Figure_Results_Data/SI_Tables/dhw_typ_age_rr.csv")
+write.csv(round(100*dhw_typ_age_ar,2),file="Figure_Results_Data/SI_Tables/dhw_typ_age_ar.csv")
+write.csv(round(100*dhw_typ_age_er,2),file="Figure_Results_Data/SI_Tables/dhw_typ_age_er.csv")
 
-write.csv(round(100*ins_typ_age_rr,2),file="SI_Tables/env_typ_age_rr.csv")
-write.csv(round(100*ins_typ_age_ar,2),file="SI_Tables/env_typ_age_ar.csv")
-write.csv(round(100*ins_typ_age_er,2),file="SI_Tables/env_typ_age_er.csv")
+write.csv(round(100*ins_typ_age_rr,2),file="Figure_Results_Data/SI_Tables/env_typ_age_rr.csv")
+write.csv(round(100*ins_typ_age_ar,2),file="Figure_Results_Data/SI_Tables/env_typ_age_ar.csv")
+write.csv(round(100*ins_typ_age_er,2),file="Figure_Results_Data/SI_Tables/env_typ_age_er.csv")
 
 # renovation counts ###################
 rs_RRn$change_hren_true<-rs_RRn$change_hren>0

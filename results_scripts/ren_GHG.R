@@ -21,13 +21,14 @@ library(stringr)
 
 rm(list=ls()) # clear workspace i.e. remove saved variables
 cat("\014") # clear console
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/")
+# define path 
+setwd("~/projects/Yale/resstock_projections")
 load("ExtData/Arch_intensities.RData")
-bs2020<-read.csv('scen_bscsv/bs2020_180k.csv')
+bs2020<-read.csv('LF_Data/scen_bscsv/bs2020_180k.csv')
 bs2020<-bs2020[,c("Building","Geometry.Building.Number.Units.HL","Geometry.Floor.Area.Bin")] # just get the columns excluded from the rs_ dataframes
 
 # reg renovation ############
-load("Intermediate_results/RenStandard_EG.RData")
+load("LF_Data/Intermediate_results/RenStandard_EG.RData")
 rs_RR_ren<-rs_RRn[,c("Year","Building","Year_Building","Census.Division", "Geometry.Floor.Area","floor_area_lighting_ft_2","Geometry.Building.Type.RECS",
                      "Geometry.Foundation.Type","Geometry.Stories","Geometry.Garage", "insulation_slab","insulation_crawlspace","insulation_finished_basement",
                     "insulation_unfinished_attic", "insulation_unfinished_basement","insulation_wall", "County",  "ctyTC","base_weight","change_iren",
@@ -121,7 +122,7 @@ rs_RR_ren[,c("hiMF FA 2020","hiMF FA 2025","hiMF FA 2030","hiMF FA 2035","hiMF F
 colSums(as.numeric(rs_RR_ren$change_iren>0)*rs_RR_ren[,c("hiMF FA 2020","hiMF FA 2025","hiMF FA 2030","hiMF FA 2035","hiMF FA 2040","hiMF FA 2045","hiMF FA 2050","hiMF FA 2055","hiMF FA 2060")])
 
 # advanced renovation ########
-load("Intermediate_results/RenAdvanced_EG.RData")
+load("LF_Data/Intermediate_results/RenAdvanced_EG.RData")
 rs_AR_ren<-rs_ARn[,c("Year","Building","Year_Building","Census.Division", "Geometry.Floor.Area","floor_area_lighting_ft_2","Geometry.Building.Type.RECS",
                      "Geometry.Foundation.Type","Geometry.Stories","Geometry.Garage", "insulation_slab","insulation_crawlspace","insulation_finished_basement",
                      "insulation_unfinished_attic", "insulation_unfinished_basement","insulation_wall", "County",  "ctyTC","base_weight","change_iren",
@@ -207,7 +208,7 @@ rs_AR_ren[,c("hiMF FA 2020","hiMF FA 2025","hiMF FA 2030","hiMF FA 2035","hiMF F
 colSums(as.numeric(rs_AR_ren$change_iren>0)*rs_AR_ren[,c("hiMF FA 2020","hiMF FA 2025","hiMF FA 2030","hiMF FA 2035","hiMF FA 2040","hiMF FA 2045","hiMF FA 2050","hiMF FA 2055","hiMF FA 2060")])
 
 # Extensive renovation ########
-load("Intermediate_results/RenExtElec_EG.RData")
+load("LF_Data/Intermediate_results/RenExtElec_EG.RData")
 rs_ER_ren<-rs_ERn[,c("Year","Building","Year_Building","Census.Division", "Geometry.Floor.Area","floor_area_lighting_ft_2","Geometry.Building.Type.RECS",
                      "Geometry.Foundation.Type","Geometry.Stories","Geometry.Garage", "insulation_slab","insulation_crawlspace","insulation_finished_basement",
                      "insulation_unfinished_attic", "insulation_unfinished_basement","insulation_wall", "County", "ctyTC","base_weight","change_iren",

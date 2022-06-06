@@ -14,7 +14,8 @@ library(stringr)
 library(sjPlot)
 rm(list=ls()) # clear workspace i.e. remove saved variables
 cat("\014") # clear console
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/results_scripts")
+# define path to 'results_scripts'
+setwd("~/projects/Yale/resstock_projections/results_scripts")
 
 
 # Last Update Peter Berrill May 6 2022
@@ -39,6 +40,7 @@ setwd("~/Yale Courses/Research/Final Paper/resstock_projections/results_scripts"
 
 # Outputs: 
 #         - Final_results/GHG_scen_comp_StateCty.RData
+#         - Figure_Results_Data/GHG_scen_comp_StateCty.xlsx, excel file containing the same data as GHG_scen_comp_StateCty.RData
 
 
 # not in function
@@ -48,7 +50,7 @@ setwd("~/Yale Courses/Research/Final Paper/resstock_projections/results_scripts"
 # these need to be by county and house type
 load("../ExtData/US_FA_GHG_summaries.RData")
 # get summary about population growth
-load("~/Yale Courses/Research/Final Paper/HSM_github/HSM_results/County_Scenario_SM_Results_Summary.RData") # large file, based on the analysis here https://github.com/peterberr/US_county_HSM
+load("~/Yale Courses/Research/Final Paper/HSM_github/HSM_results/County_Scenario_SM_Results_Summary.RData") # large file, based on the analysis here https://github.com/peterberr/US_county_HSM. Write to peter.berrill@aya.yale.edu to request a copy
 load("../ExtData/ctycode.RData")
 
 smop_base_small$pop_2020<-0
@@ -691,6 +693,28 @@ st_assess<-ass(base_RR_State,base_AR_State,base_ER_State,baseDERFA_RR_State,base
 
 # save variables 
 save(cty_type_assess,st_type_assess,cty_assess,st_assess,file = '../Final_results/GHG_scen_comp_StateCty.RData')
+
+explain<-data.frame(Info=c('This file contains comparisons of cumulative 2020-2060 GHG emissions reductions by appliying individual and some combinations of decarbonization strategies.',
+                           'Results are summarised at the level of county, state, county-type, and state-type where type refers to the three summary housing categories (SF, MF, MH)',
+                           'Priority strategy orders and `best` strategies are identified per each summary category.',
+                           'Because of the sampling methods used to represent the entire US national housing stock do not produce exactly consistent sum-totals of housing units per type and geographical unit between housing stock scenarios and compared to the actual housing stock model projections of housing units, in the county and county-type tabs we include the columns `EstRatio_base`	`EstRatio_hiDR`	`EstRatio_hiMF` which give the ratio of sample estimates of housing unit counts per county vs housing stock model counts of housing units per county.',
+                           'Values much higher or lower than 1 (i.e. <0.95 or >1.05) can lead to comparisons between stock scenarios and between counties that are not reliable. For that reason, results in rows where these ratio columns are quite higher/lower than 1 have low reliability.'))
+
+fn<-"../Figure_Results_Data/GHG_scen_comp_StateCty.xlsx"
+wb<-createWorkbook()
+addWorksheet(wb, "County")
+writeData(wb, "County", cty_assess)
+addWorksheet(wb, "State")
+writeData(wb, "State", st_assess)
+addWorksheet(wb, "County_Type")
+writeData(wb, "County_Type", cty_type_assess)
+addWorksheet(wb, "State_Type")
+writeData(wb, "State_Type", st_type_assess)
+addWorksheet(wb, "Info")
+writeData(wb, "Info", explain)
+
+saveWorkbook(wb,file = fn,overwrite = TRUE)
+rm(wb)
 
 # some simple linear models to estimate influence of different variables
 # try filtering on the difference between estimates of the total stock and actual values to remove results that differ due to different stock estimates from different samples drawn

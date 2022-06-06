@@ -1,0 +1,37 @@
+"","Type","variable","GHG_redn_t","NPV_USD","AbateCost_USD_t"
+"1","dhw","East North Central",3.4,-1132.7,109.4
+"2","dhw","East South Central",3.9,28.5,-50
+"3","dhw","Middle Atlantic",7.4,-1083.7,178.5
+"4","dhw","Mountain",4.4,-974.3,85.5
+"5","dhw","New England",9.6,-1092,150.5
+"6","dhw","Pacific",7.7,-1235.9,203.4
+"7","dhw","South Atlantic",3.5,117.7,-109
+"8","dhw","West North Central",7,-740.9,101.3
+"9","dhw","West South Central",4.5,45.8,-41.7
+"10","env","East North Central",29.7,1723.1,-57.4
+"11","env","East South Central",15.8,1256.6,-76.8
+"12","env","Middle Atlantic",25.8,2700.5,-95.2
+"13","env","Mountain",12.8,177.7,-16.4
+"14","env","New England",30.6,5570.9,-162.7
+"15","env","Pacific",5.9,-235.7,9.6
+"16","env","South Atlantic",7.8,838.7,-99.9
+"17","env","West North Central",23.3,1883.1,-74.8
+"18","env","West South Central",9.4,476.4,-51.7
+"19","heat","East North Central",16.8,1322.3,-95.8
+"20","heat","East South Central",7.8,1370.7,-175
+"21","heat","Middle Atlantic",18.9,1726.6,-110.9
+"22","heat","Mountain",7,598,-100.6
+"23","heat","New England",30.1,2682.3,-160.1
+"24","heat","Pacific",3.8,291.9,-87.6
+"25","heat","South Atlantic",4.6,1195,-227.2
+"26","heat","West North Central",18,1704.3,-113
+"27","heat","West South Central",5.5,985.8,-149.2
+"28","heat_env","East North Central",50.8,2292.3,-50
+"29","heat_env","East South Central",22.9,1345.1,-64
+"30","heat_env","Middle Atlantic",59.2,4678.9,-85.5
+"31","heat_env","Mountain",28.3,804.4,-31.2
+"32","heat_env","New England",71.1,7733.3,-134.9
+"33","heat_env","Pacific",11.3,-662,27.3
+"34","heat_env","South Atlantic",14.4,1946,-113.1
+"35","heat_env","West North Central",48.4,3257.3,-71.5
+"36","heat_env","West South Central",16,1099,-58.9

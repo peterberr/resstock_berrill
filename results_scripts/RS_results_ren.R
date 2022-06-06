@@ -43,14 +43,14 @@ library(reshape2)
 
 # Outputs: 
 #         - Final_results/renGHG.RData
-#         - Intermediate_results/RenStandard_full.Rdata
-#         - Intermediate_results/RenStandard_EG.RData
+#         - Intermediate_results/RenStandard_full.Rdata (saved in the LF folder)
+#         - Intermediate_results/RenStandard_EG.RData (saved in the LF folder)
 #         - Intermediate_results/RR_redn.RData
-#         - Intermediate_results/RenAdvanced_full.Rdata
-#         - Intermediate_results/RenAdvanced_EG.RData
+#         - Intermediate_results/RenAdvanced_full.Rdata (saved in the LF folder)
+#         - Intermediate_results/RenAdvanced_EG.RData (saved in the LF folder)
 #         - Intermediate_results/AR_redn.RData
-#         - Intermediate_results/RenExtElec_full.Rdata
-#         - Intermediate_results/RenExtElec_EG.RData
+#         - Intermediate_results/RenExtElec_full.Rdata (saved in the LF folder)
+#         - Intermediate_results/RenExtElec_EG.RData (saved in the LF folder)
 #         - Intermediate_results/ER_redn.Rdata
 
 
@@ -58,73 +58,73 @@ library(reshape2)
 setwd("~/projects/Yale/resstock_projections/")
 # import ResStock results csvs
 # 2020 base stock
-load("Eagle_outputs/Complete_results/res_2020_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_2020_final.RData")
 rs2020<-rsn; rm(rsn)
 # Regular Renovated (RR) 2020 stock in each sim year
-load("Eagle_outputs/Complete_results/res_RR_2025_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_RR_2025_final.RData")
 rs25RR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_RR_2030_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_RR_2030_final.RData")
 rs30RR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_RR_2035_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_RR_2035_final.RData")
 rs35RR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_RR_2040_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_RR_2040_final.RData")
 rs40RR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_RR_2045_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_RR_2045_final.RData")
 rs45RR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_RR_2050_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_RR_2050_final.RData")
 rs50RR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_RR_2055_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_RR_2055_final.RData")
 rs55RR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_RR_2060_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_RR_2060_final.RData")
 rs60RR<-rsn; rm(rsn)
 
 # Advanced Renovated (AR) 2020 stock in each sim year
-load("Eagle_outputs/Complete_results/res_AR_2025_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_AR_2025_final.RData")
 rs25AR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_AR_2030_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_AR_2030_final.RData")
 rs30AR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_AR_2035_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_AR_2035_final.RData")
 rs35AR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_AR_2040_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_AR_2040_final.RData")
 rs40AR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_AR_2045_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_AR_2045_final.RData")
 rs45AR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_AR_2050_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_AR_2050_final.RData")
 rs50AR<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_AR_2055_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_AR_2055_final.RData")
 rs55AR<-AR55; rm(AR55)
-load("Eagle_outputs/Complete_results/res_AR_2060_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_AR_2060_final.RData")
 rs60AR<-rsn; rm(rsn)
 
 # Extensive Renovated (ER) 2020 stock in each sim year
-load("Eagle_outputs/Complete_results/res_ER_2025_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_ER_2025_final.RData")
 rs25ER<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_ER_2030_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_ER_2030_final.RData")
 rs30ER<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_ER_2035_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_ER_2035_final.RData")
 rs35ER<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_ER_2040_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_ER_2040_final.RData")
 rs40ER<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_ER_2045_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_ER_2045_final.RData")
 rs45ER<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_ER_2050_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_ER_2050_final.RData")
 rs50ER<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_ER_2055_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_ER_2055_final.RData")
 rs55ER<-rsn; rm(rsn)
-load("Eagle_outputs/Complete_results/res_ER_2060_final.RData")
+load("LF_Data/Eagle_outputs/Complete_results/res_ER_2060_final.RData")
 rs60ER<-rsn; rm(rsn)
 
 # import R modified bcsv files, these describe the characteristics of future cohorts in three stock scenarios (base, hiDR, hiMF) and 4 characteristics scenarios 'scen' (base, DE, RFA, DERFA)
-load("Intermediate_results/agg_bscsv.RData")
+load("LF_Data/Intermediate_results/agg_bscsv.RData")
 
 # import renovation metadata, these are produced by the resScenarios scripts
-load("Intermediate_results/RenAdvanced.RData")
+load("LF_Data/Intermediate_results/RenAdvanced.RData")
 rs_2020_60_AR<-rs_2020_2060
 rm(rs_2020_2060)
-load("Intermediate_results/RenStandard.RData")
+load("LF_Data/Intermediate_results/RenStandard.RData")
 rs_2020_60_RR<-rs_2020_2060
 rm(rs_2020_2060)
-load("Intermediate_results/RenExtElec.RData")
+load("LF_Data/Intermediate_results/RenExtElec.RData")
 rs_2020_60_ER<-rs_2020_2060
 rm(rs_2020_2060)
 
