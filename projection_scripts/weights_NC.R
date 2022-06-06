@@ -19,7 +19,7 @@ cat("\014") # clear console
 
 
 # Outputs: 
-#         - Intermediate_results/base_weights_NC.RData
+#         - Intermediate_results/base_weights_NC.RData, a small enough file, can be shared on github
 
 
 # Revision March 2022, recalc the NewConEstimates at the county-cohort-type level

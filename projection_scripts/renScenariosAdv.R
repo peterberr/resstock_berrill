@@ -8,10 +8,10 @@ cat("\014") # clear console
 
 # Inputs: - RenovationStats_new.RData, probabilities of renovation characteristics by renovation type and Census Region and House Type (3), extracted from AHS surveys
 #         - rencombs.RData, probabilistic pre/post renovation technology/efficiency combinations       
-#         - bs2020_180k.csv, 180,000 size sample (buildstock.csv file) descrbining 2020 housing stock
+#         - bs2020_180k.csv, 180,000 size sample (buildstock.csv file) descrbining 2020 housing stock. A large file stored in LF_Data/scen_bscsv
 #         - decayFactorsRen.RData, stock decay factors showing decay of <2020 housing stock to 2060, by county, house type (3), and cohort (Vintage ACS)
 
-# Outputs:- Intermediate_results/RenAdvanced.RData, projection of the <2020 housing stock to 2060 including all characteristics changes due to renovations
+# Outputs:- Intermediate_results/RenAdvanced.RData, projection of the <2020 housing stock to 2060 including all characteristics changes due to renovations.  A large file stored in LF_Data/Intermediate_results
 #         - Intermediate_results/AdvRenSummary.RData, summary of changes in <2020 housing stock 2020-2060 by different equipment/efficiency characteristics and total stock numbers
 
 library(dplyr)
@@ -19,7 +19,8 @@ library(ggplot2)
 library(RColorBrewer)
 library(readr)
 library(reshape2)
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/projection_scripts")
+# define path to 'projection_scripts'
+setwd("~/projects/Yale/resstock_projections/projection_scripts")
 
 load("../ExtData/RenovationStats_new.RData") # produced by script AHS_new_ren2.R
 load('../Intermediate_results/rencombs.RData') # Lists of possible heat fuel/efficiencies, water heat fuel/efficiencies, cooling efficiencies, insulation types
@@ -32,7 +33,7 @@ dhw_types<-data.frame(Water.Heater.Efficiency=wheff_types)
 write.csv(dhw_types,file='../ExtData/dhw_types.csv')
 
 
-rs<-read.csv("../scen_bscsv/bs2020_180k.csv") # load in most recent sample of 2020 housing stock
+rs<-read.csv("../LF_Data/scen_bscsv/bs2020_180k.csv") # load in sample of 2020 housing stock
 nms<-names(rs) # see which columns can be removed, none until after the RS simulations have been done
 
 # create columns for indicating the year of the most recent renovation
@@ -98,7 +99,7 @@ pwfuel_all[,"Gas","W"]<-c(0.2,0.8,0,0,0) #   more gas switches to elec
 pwfuel_all[,"Oil","W"]<-c(0.65,0.35,0,0,0) # 
 pwfuel_all[,"Propane","W"]<-c(0.25,0.25,0,0,0.5) # Much more propane becomes electric
 
-write.csv(pfuel_all,"../SI_Tables/pfuel_AR.csv")
+write.csv(pfuel_all,"../Figure_Results_Data/SI_Tables/pfuel_AR.csv")
 
 # load in heating type and fuel combinations
 htf<-as.data.frame(read_tsv('../project_national_2025_base/housing_characteristics/HVAC Heating Type and Fuel.tsv',col_names = TRUE))
@@ -1241,10 +1242,10 @@ diff_55_60<-nrow(rs_2020_2060)-nrow(rs_2020_2055)
 rs_2020_2060$Year<-0
 rs_2020_2060$Year<-c(rep(2020,nrow(rs)),rep(2025,diff_20_25),rep(2030,diff_25_30),rep(2035,diff_30_35),rep(2040,diff_35_40),rep(2045,diff_40_45),rep(2050,diff_45_50),
                      rep(2055,diff_50_55),rep(2060,diff_55_60))
-save(rs_2020_2060,file="../Intermediate_results/RenAdvanced.RData")
+save(rs_2020_2060,file="../LF_Data/Intermediate_results/RenAdvanced.RData")
 
 # summarize and visualize stock characteristic changes #########
-load('../Intermediate_results/decayFactorsRen.RData')
+load('../LF_Data/Intermediate_results/decayFactorsRen.RData')
 
 # predefine dataframes used to store and graph results
 df<-data.frame(Count=tapply(rs_2020$base_weight,rs_2020$Heating.Fuel,sum))

@@ -20,7 +20,8 @@ cat("\014") # clear console
 #         - project_national_yr/housing_characteristics/County.tsv
 #         - project_national_yr/housing_characteristics/ASHRAE IECC Climate Zone 2004.tsv
 
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/projection_scripts")
+# define path to 'projection_scripts'
+setwd("~/projects/Yale/resstock_projections/projection_scripts")
 library(readr)
 library(stringr)
 # function to remove dots from col names before saving as tsv
@@ -44,11 +45,11 @@ h20pc<-h20pc[,c(1,2,76,3:75)] # bring RS_ID to the third colum
 puma<-read_tsv('../project_national/housing_characteristics/PUMA.tsv',col_names = TRUE)
 puma<-puma[1:3108,] # remove comments at bottom
 type_acs<-read_tsv('../project_national/housing_characteristics/Geometry Building Type ACS.tsv',col_names = TRUE)
-type_acs<-type_acs[1:(dim(type_acs)[1]-2),] # remove comments at bottom
+type_acs<-type_acs[1:2336,] # remove comments at bottom
 type_new<-as.data.frame(type_acs)
 type_new[,2:12]<-0
 vintage<-read_tsv('../project_national/housing_characteristics/Vintage.tsv',col_names = TRUE)
-vintage<-vintage[1:(dim(vintage)[1]-2),] # remove comments at 
+vintage<-vintage[1:21024,] # remove comments at 
 vintage_new<-as.data.frame(vintage)
 vintage_new[,3:13]<-0
 puma_list<-unique(vintage$`Dependency=PUMA`)

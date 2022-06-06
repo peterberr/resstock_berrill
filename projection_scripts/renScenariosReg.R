@@ -9,10 +9,10 @@ cat("\014") # clear console
 
 # Inputs: - RenovationStats_new.RData, probabilities of renovation characteristics by renovation type and Census Region and House Type (3), extracted from AHS surveys
 #         - rencombs.RData, probabilistic pre/post renovation technology/efficiency combinations       
-#         - bs2020_180k.csv, 180,000 size sample (buildstock.csv file) descrbining 2020 housing stock
+#         - bs2020_180k.csv, 180,000 size sample (buildstock.csv file) descrbining 2020 housing stock. A large file stored in LF_Data/scen_bscsv
 #         - decayFactorsRen.RData, stock decay factors showing decay of <2020 housing stock to 2060, by county, house type (3), and cohort (Vintage ACS)
 
-# Outputs:- Intermediate_results/RenStandard.RData, projection of the <2020 housing stock to 2060 including all characteristics changes due to renovations
+# Outputs:- Intermediate_results/RenStandard.RData, projection of the <2020 housing stock to 2060 including all characteristics changes due to renovations.  A large file stored in LF_Data/Intermediate_results
 #         - Intermediate_results/RegRenSummary.RData, summary of changes in <2020 housing stock 2020-2060 by different equipment/efficiency characteristics and total stock numbers
 
 library(dplyr)
@@ -20,11 +20,12 @@ library(ggplot2)
 library(RColorBrewer)
 library(readr)
 library(reshape2)
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/projection_scripts")
+# define path to 'projection_scripts'
+setwd("~/projects/Yale/resstock_projections/projection_scripts")
 
 load("../ExtData/RenovationStats_new.RData") # produced by script AHS_new_ren2.R
 load('../Intermediate_results/rencombs.RData') # Lists of possible heat fuel/efficiencies, water heat fuel/efficiencies, cooling efficiencies, insulation types
-rs<-read.csv("../scen_bscsv/bs2020_180k.csv") # load sample of 2020 housing stock
+rs<-read.csv("../LF_Data/scen_bscsv/bs2020_180k.csv") # load sample of 2020 housing stock
 nms<-names(rs) # see which columns can be removed, none until after the RS simulations have been done
 
 # create columns for indicating the year of the most recent renovation
@@ -46,7 +47,7 @@ htf<-as.data.frame(read_tsv('../project_national_2025_base/housing_characteristi
 htft<-t(htf)
 # adjust the fuel switching probability matrix pfuel_all to slightly reduce chance of switching elec-> oil in NE
 pfuel_all[,"Electricity","NE"]<-c(0.67,0.01,0.24,0.045,0,0.035)
-write.csv(pfuel_all,"../SI_Tables/pfuel_RR.csv")
+write.csv(pfuel_all,"../Figure_Results_Data/SI_Tables/pfuel_RR.csv")
 # define the matrix for wall insulation switching. 
 #wins_types pre-loaded in rencombs
 pwins<-matrix(0,length(wins_types),length(wins_types))
@@ -1137,10 +1138,10 @@ diff_55_60<-nrow(rs_2020_2060)-nrow(rs_2020_2055)
 rs_2020_2060$Year<-0
 rs_2020_2060$Year<-c(rep(2020,nrow(rs)),rep(2025,diff_20_25),rep(2030,diff_25_30),rep(2035,diff_30_35),rep(2040,diff_35_40),rep(2045,diff_40_45),rep(2050,diff_45_50),
                      rep(2055,diff_50_55),rep(2060,diff_55_60))
-save(rs_2020_2060,file="../Intermediate_results/RenStandard.RData")
+save(rs_2020_2060,file="../LF_Data/Intermediate_results/RenStandard.RData")
 
 # summarize and visualize stock characteristic changes #########
-load('../Intermediate_results/decayFactorsRen.RData')
+load('../LF_Data/Intermediate_results/decayFactorsRen.RData')
 
 # predefine dataframes used to store and graph results
 df<-data.frame(Count=tapply(rs_2020$base_weight,rs_2020$Heating.Fuel,sum))

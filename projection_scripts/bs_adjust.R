@@ -7,7 +7,7 @@ cat("\014") # clear console
 
 # Purpose: Define more efficient windows, infiltration, insulation, AC, in new homes built after 2020, depending on the state and projected adoption of energy efficiency codes/standards
 
-# Inputs: - All of the future construction files for each housing stock/new housing characteristics scenario in scen_bscsv (not bs2020_180k describing the housing stock in 2020)
+# Inputs: - All of the future construction files for each housing stock/new housing characteristics scenario in scen_bscsv (not bs2020_180k describing the housing stock in 2020). To request a copy email peter.berrill@aya.yale.edu
 
 # Outputs:- All of the files in scen_bscsv_adj which include the adjustments made in this script
 #         - All of the bs files ready for simulation in scen_bs_csv_sim

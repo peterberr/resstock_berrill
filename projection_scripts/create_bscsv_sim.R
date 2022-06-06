@@ -7,8 +7,8 @@ cat("\014") # clear console
 # Inputs: 3 renovation .RData files; RenStandard, RenAdvanced, RenExtElec. 
 # Outputs: 24 (8 sim_years by 3 renovation scenarios) renovation buildstock csv type files: bs_RR_2025.csv, bs_RR_2030.csv, etc.
 
-
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/projection_scripts")
+# define path to 'projection_scripts'
+setwd("~/projects/Yale/resstock_projections/projection_scripts")
 rm_dot2<-function(df) {
   cn<-names(df)
   cn<-gsub("Dependency.", "Dependency=",cn)
@@ -20,12 +20,12 @@ rm_dot2<-function(df) {
   df
 }
 
-load("../Intermediate_results/RenStandard.RData")
+load("../LF_Data/Intermediate_results/RenStandard.RData")
 rs_RR<-rs_2020_2060
-load("../Intermediate_results/RenAdvanced.RData")
+load("../LF_Data/Intermediate_results/RenAdvanced.RData")
 rs_AR<-rs_2020_2060
 rm(rs_2020_2060)
-load("../Intermediate_results/RenExtElec.RData")
+load("../LF_Data/Intermediate_results/RenExtElec.RData")
 rs_ER<-rs_2020_2060
 rm(rs_2020_2060)
 
@@ -89,5 +89,3 @@ write.csv(rs_ER_2055,file='../scen_bscsv_sim/bs_ER_2055.csv', row.names = FALSE)
 write.csv(rs_ER_2060,file='../scen_bscsv_sim/bs_ER_2060.csv', row.names = FALSE)
 
 write.csv(rs_ER_sample,file='../scen_bscsv_sim/bs_ER_sample.csv', row.names = FALSE)
-
-

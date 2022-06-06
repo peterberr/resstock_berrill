@@ -52,7 +52,7 @@ gicty<-gicty[order(gicty$geoid10,gicty$Year),] # order by county
 # now we have a dataframe showing ghg intensity for each countyfor each year, according to the counties membership of a given balancing area
 
 # in case it is deemed preferable to calculate GHG int by RTO, I will do so now
-reg<-read.csv("~/Yale Courses/Research/Final Paper/GHG_Standard_Scen/regions_default.csv")
+reg<-read.csv("../ExtData/regions_default.csv")
 reg<-reg[reg$country=="usa",]
 reg<-reg[,2:3]
 regd<-distinct(reg)
@@ -81,7 +81,6 @@ cm2<-cm2[,1:19]
 names(cm2)[2:19]<-paste("rto",names(cm2)[2:19],sep="")
 c2<-cm2[,2:19]
 c2[c2>1]<-1 # county to rto concordance
-#cm2[,2:135]<-c2 # i don't think this does anything
 
 gicyrto<-as.matrix(c2)%*%as.matrix(girdf[,1:19]) # multiply countyXrto concordance by rtoXyear matrix to get a countyXyear matrix
 
@@ -93,7 +92,7 @@ gicty_rto$Year<-as.numeric(as.character(gicty_rto$Year))
 gicty_rto<-gicty_rto[order(gicty_rto$geoid10,gicty_rto$Year),] # order by county
 
 # yet another alternative regional grouping of intensities, this time by Cambium GEA
-gea<-read.csv("~/Yale Courses/Research/Final Paper/GHG_Standard_Scen/ReEDS_mapping.csv")
+gea<-read.csv("../ExtData/ReEDS_mapping.csv")
 GIba3<-distinct(left_join(GIba,gea,by = "r"))
 
 gi3<-GIba3[,c(1,2,40,42,43)]
@@ -108,24 +107,19 @@ gigdf$gea<-rownames(gigdf)
 gigea<-melt(gigdf,id.vars = c("gea"))
 names(gigea)[2:3]<-c("Year","GHG_int")
 gigea$Year<-as.numeric(as.character(gigea$Year))
-#gigea<-gigea[order(gigea$gea,gigea$Year),] # order by gea
 
-#reg$p2<-as.numeric(sub("p*","",reg$p))
 CC3<-distinct(left_join(CC2,gea,by = c("p" = "r")))
 
-#CC2$gea<-as.numeric(sub("gea*","",CC2$gea))
 cm3<-dcast(CC3[,c(3,17)],geoid10~gea) # conconrdance matrix of counties to geas
 cm3[is.na(cm3)]<-0
 cm3<-cm3[,1:21]
-#names(cm3)[2:21]<-paste("gea",names(cm3)[2:19],sep="")
+
 c3<-cm3[,2:21]
 c3[c3>1]<-1 # county to gea concordance
 
 for (n in names(c3)) {
   c3[,n]<-as.numeric(unlist(c3[,n]))
 }
-
-#cm3[,2:135]<-c3
 
 gicygea<-as.matrix(c3)%*%as.matrix(gigdf[,1:19])
 
@@ -201,7 +195,6 @@ cm2<-cm2[,1:19]
 names(cm2)[2:19]<-paste("rto",names(cm2)[2:19],sep="")
 c2<-cm2[,2:19]
 c2[c2>1]<-1
-#cm2[,2:135]<-c2
 
 gicyrto<-as.matrix(c2)%*%as.matrix(girdf[,1:19])
 
@@ -228,24 +221,6 @@ gigdf$gea<-rownames(gigdf)
 gigea<-melt(gigdf,id.vars = c("gea"))
 names(gigea)[2:3]<-c("Year","GHG_int")
 gigea$Year<-as.numeric(as.character(gigea$Year))
-#gigea<-gigea[order(gigea$gea,gigea$Year),] # order by gea
-
-#reg$p2<-as.numeric(sub("p*","",reg$p))
-#CC3<-distinct(left_join(CC2,gea,by = c("p" = "r")))
-
-#CC2$gea<-as.numeric(sub("gea*","",CC2$gea))
-# cm3<-dcast(CC3[,c(3,17)],geoid10~gea) # conconrdance matrix of counties to geas
-# cm3[is.na(cm3)]<-0
-# cm3<-cm3[,1:21]
-# #names(cm3)[2:21]<-paste("gea",names(cm3)[2:19],sep="")
-# c3<-cm3[,2:21]
-# c3[c3>1]<-1 # county to gea concordance
-# 
-# for (n in names(c3)) {
-#   c3[,n]<-as.numeric(unlist(c3[,n]))
-# }
-
-#cm3[,2:135]<-c3
 
 gicygea<-as.matrix(c3)%*%as.matrix(gigdf[,1:19])
 
@@ -264,6 +239,6 @@ girto_LREC<-girto
 gicty_gea_LREC<-gicty_gea
 gigea_LREC<-gigea
 
-
 # gicty_rto is an alternative calculation of GHGI by county, based on rto averages rather than balancing area averages
+# gicty_gea is an alternative calculation of GHGI by county, based on gea averages rather than balancing area averages
 save(gicty_LREC,girto_LREC,gicty_rto_LREC,gicty_gea_LREC,gigea_LREC,file="../ExtData/GHGI_LowRECost.RData")

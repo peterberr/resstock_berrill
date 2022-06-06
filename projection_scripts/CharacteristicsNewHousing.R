@@ -50,7 +50,8 @@ cat("\014") # clear console
 
 
 library(readr)
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/projection_scripts")
+# define path to 'projection_scripts'
+setwd("~/projects/Yale/resstock_projections/projection_scripts")
 # list the names of the project folders
 projects<-list.files(pattern = "project_national_",path="../")
 projects<-paste("../",projects,sep="")
@@ -2102,17 +2103,3 @@ for (p in 1:25) { # which projects do these changes apply to? in this case all p
   fol_fn<-paste(projects[p],'/housing_characteristics/Vacancy Status.tsv',sep = "")
   write.table(format(vac_new,nsmall=6,digits=1,scientific=FALSE),fol_fn,append = FALSE,quote = FALSE, row.names = FALSE, col.names = TRUE,sep='\t')
 }
-
-# # vintage ACS ####### already fixed
-# vacs<-read_tsv('project_national/housing_characteristics/Vintage ACS.tsv',col_names = TRUE)
-# vacs<-vacs[1:9,1:7]
-# vacs$`Option=2050s`<-vacs$`Option=2040s`<-vacs$`Option=2030s`<-vacs$`Option=2020s`<-0
-# vacs<-rbind(vacs,vacs[5:8,])
-# vacs[10:13,1]<-c("2020s","2030s","2040s","2050s")
-# vacs[10:13,2:11]<-0
-# vacs[10:13,8:11]<-diag(4)
-# vacs_new<-as.data.frame(vacs)
-# for (p in 2:25) { # which projects do these changes apply to? in this case all
-#   fol_fn<-paste(projects[p],'/housing_characteristics/Vintage ACS.tsv',sep = "")
-#   write.table(format(vacs_new,nsmall=6,digits=1,scientific=FALSE),fol_fn,append = FALSE,quote = FALSE, row.names = FALSE, col.names = TRUE,sep='\t')
-# }
