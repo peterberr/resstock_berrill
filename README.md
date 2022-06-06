@@ -1,5 +1,8 @@
 <img src="https://user-images.githubusercontent.com/1276021/85608250-1ff46b80-b612-11ea-903e-4ced367e5940.jpg" width="280">
 
+To clone this specific `features/projections` branch, use the following:
+git clone -b <branchname> --single-branch <this-fork-url>
+
 The `develop` branch is under active development. Find the latest release [here](https://github.com/NREL/resstock/releases).
 
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/NREL/resstock?include_prereleases)](https://github.com/NREL/resstock/releases)

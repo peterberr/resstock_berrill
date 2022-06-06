@@ -54,8 +54,8 @@ library(reshape2)
 #         - Intermediate_results/ER_redn.Rdata
 
 
-
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/")
+# set working directory to where the repo exists
+setwd("~/projects/Yale/resstock_projections/")
 # import ResStock results csvs
 # 2020 base stock
 load("Eagle_outputs/Complete_results/res_2020_final.RData")

@@ -60,7 +60,8 @@ library(openxlsx)
 
 rm(list=ls()) # clear workspace i.e. remove saved variables
 cat("\014") # clear console
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/results_scripts")
+# set working directory to where the results_scripts folder exists
+setwd("~/projects/Yale/resstock_projections/results_scripts/")
 # load in results
 # first of all embodied/new construction emissions for 6 housing stock scenarios
 load("../ExtData/US_FA_GHG_summaries.RData")
