@@ -9,7 +9,7 @@ library(openxlsx)
 
 # Purpose: Visualize main results, and generate numerous supporting figures and table data for the SI.
 
-# Inputs: - ExtData/US_FA_GHG_summaries.RData, floor area and GHG summaries from housing stock model (HSM)
+# Inputs: - ExtData/US_FA_GHG_summaries.RData, floor area and GHG summaries from housing stock model (HSM). NB for large files unable to share on git, the source file path is /LF_Data/ before Final_results or Intermediate_results
 #         - Final_results/renGHG.RData, embodied emissions from renovations
 #         - Final_results/res_base_RR.RData, energy and emissions for specific stock and renovation scenario combination, produced by RS_results_proj_new_rev_fn
 #         - Final_results/res_base_AR.RData, energy and emissions for specific stock and renovation scenario combination, produced by RS_results_proj_new_rev_fn
@@ -50,11 +50,11 @@ library(openxlsx)
 #         - Final_results/res_hiMFDERFA_ER.RData, energy and emissions for specific stock and renovation scenario combination, produced by RS_results_proj_new_rev_fn
 
 # Outputs: 
-#         - Supplementary_results/EI.csv
-#         - Supplementary_results/EI_seg_base.csv
-#         - Final_results/GHGall_new.RData
-#         - Final_results/GHG_Source_new.RData
-#         - Figure data in csv or sometimes .RData files
+#         - Final_results/supp_Tab5.csv
+#         - Final_results/supp_Tab4.csv
+#         - Final_results/GHGall.RData
+#         - Final_results/GHG_Source.RData
+#         - Figure data in csv files, in Figure_Results_Data, for Fig1, Fig3, FigS31
 #         - many figure files which need manually saved
 
 
@@ -70,15 +70,15 @@ load("../Final_results/renGHG.RData")
 
 # then full energy results for housing stock and characteristics scenarios, each containing 2 electricity grid variations, all produced by RS_results_proj.R script
 # first base scripts #########
-load("../Final_results/res_base_RR.RData")
-load("../Final_results/res_base_AR.RData")
-load("../Final_results/res_base_ER.RData")
-load("../Final_results/res_hiDR_RR.RData")
-load("../Final_results/res_hiDR_AR.RData")
-load("../Final_results/res_hiDR_ER.RData")
-load("../Final_results/res_hiMF_RR.RData")
-load("../Final_results/res_hiMF_AR.RData")
-load("../Final_results/res_hiMF_ER.RData")
+load("../LF_Data/Final_results/res_base_RR.RData")
+load("../LF_Data/Final_results/res_base_AR.RData")
+load("../LF_Data/Final_results/res_base_ER.RData")
+load("../LF_Data/Final_results/res_hiDR_RR.RData")
+load("../LF_Data/Final_results/res_hiDR_AR.RData")
+load("../LF_Data/Final_results/res_hiDR_ER.RData")
+load("../LF_Data/Final_results/res_hiMF_RR.RData")
+load("../LF_Data/Final_results/res_hiMF_AR.RData")
+load("../LF_Data/Final_results/res_hiMF_ER.RData")
 
 # add in GHG intensities for 2035 CFE
 rs_base_all_RR[,c("GHG_int_2020_CFE","GHG_int_2025_CFE")]<-rs_base_all_RR[,c("GHG_int_2020_LRE","GHG_int_2025_LRE")]
@@ -779,7 +779,7 @@ rs_base_all_ER[rs_base_all_ER$NewCon==0,]$OldCon<-1
 EI_base_ER60<-1000*tapply(rs_base_all_ER$Tot_GJ*rs_base_all_ER$base_weight_STCY*rs_base_all_ER$wbase_2060,list(rs_base_all_ER$Type3,rs_base_all_ER$Vintage),sum)/
   (tapply(rs_base_all_ER$floor_area_lighting_ft_2*rs_base_all_ER$base_weight_STCY*rs_base_all_ER$wbase_2060,list(rs_base_all_ER$Type3,rs_base_all_ER$Vintage),sum)/10.765)
 
-fn<-"../Supplementary_results/EI.xlsx"
+fn<-"../Final_results/supp_Tab5.xlsx"
 wb<-createWorkbook()
 addWorksheet(wb, "base_RR_2020")
 writeData(wb, "base_RR_2020", EI_base_RR20)
@@ -815,6 +815,10 @@ rs_base_all_AR$Segment<-"Old_Renovated"
 rs_base_all_AR[rs_base_all_AR$Vintage %in% c("2020s","2030s","2040s","2050s"),]$Segment<-"New"
 rs_base_all_AR[!rs_base_all_AR$Segment=="New" & rs_base_all_AR$Year==2020,]$Segment<-"Old_Unrenovated"
 
+rs_base_all_ER$Segment<-"Old_Renovated"
+rs_base_all_ER[rs_base_all_ER$Vintage %in% c("2020s","2030s","2040s","2050s"),]$Segment<-"New"
+rs_base_all_ER[!rs_base_all_ER$Segment=="New" & rs_base_all_ER$Year==2020,]$Segment<-"Old_Unrenovated"
+
 stock_seg_AR<-melt(data.frame(Year=seq(2020,2060,5),New=colSums((rs_base_all_AR[rs_base_all_AR$Segment=="New",]$base_weight_STCY*rs_base_all_AR[rs_base_all_AR$Segment=="New",
                                                                                                                                            c("wbase_2020",  "wbase_2025", "wbase_2030", "wbase_2035", "wbase_2040", "wbase_2045", "wbase_2050", "wbase_2055", "wbase_2060")])),
                               Old_Renovated=colSums((rs_base_all_AR[rs_base_all_AR$Segment=="Old_Renovated",]$base_weight_STCY*rs_base_all_AR[rs_base_all_AR$Segment=="Old_Renovated",
@@ -824,7 +828,7 @@ stock_seg_AR<-melt(data.frame(Year=seq(2020,2060,5),New=colSums((rs_base_all_AR[
 names(stock_seg_AR)[2]<-"Housing Segment"
 windows(width=8,height = 6.5)
 ggplot(stock_seg_AR,aes(Year,1E-6*value,fill=`Housing Segment`)) + geom_area()  + 
-  labs(title ="b) Stock evolution with Advanced Renovation",y="Million Housing Units") + theme_bw() + 
+  labs(title ="b) Stock evolution with Advanced/Extensive Renovation",y="Million Housing Units") + theme_bw() + 
   scale_fill_brewer(palette="Set2")  +
   theme(axis.text=element_text(size=11),axis.title=element_text(size=12,face = "bold"),plot.title = element_text(size = 12),legend.key.width = unit(1,'cm'))
 
@@ -836,8 +840,8 @@ stock_seg_ER<-melt(data.frame(Year=seq(2020,2060,5),New=colSums((rs_base_all_ER[
                                                                                                                                                   c("wbase_2020",  "wbase_2025", "wbase_2030", "wbase_2035", "wbase_2040", "wbase_2045", "wbase_2050", "wbase_2055", "wbase_2060")]))),id.vars='Year')
 names(stock_seg_ER)[2]<-"Housing Segment"
 windows(width=8,height = 6.5)
-ggplot(stock_seg_ER,aes(Year,1E-6*value,fill=`Housing Segment`)) + geom_area()  + 
-  labs(title ="b) Stock evolution with Extensive Renovation",y="Million Housing Units") + theme_bw() + 
+ggplot(stock_seg_ER,aes(Year,1E-6*value,fill=`Housing Segment`)) + geom_area()  +
+  labs(title ="b) Stock evolution with Extensive Renovation",y="Million Housing Units") + theme_bw() +
   scale_fill_brewer(palette="Set2")  +
   theme(axis.text=element_text(size=11),axis.title=element_text(size=12,face = "bold"),plot.title = element_text(size = 12),legend.key.width = unit(1,'cm'))
 
@@ -850,10 +854,6 @@ stock_seg_AR[stock_seg_AR$Year==2050 & stock_seg_AR$`Housing Segment`=='Old_Reno
 
 # 99.2% for ER
 stock_seg_ER[stock_seg_ER$Year==2050 & stock_seg_ER$`Housing Segment`=='Old_Renovated',]$value/(stock_seg_ER[stock_seg_ER$Year==2050 & stock_seg_ER$`Housing Segment`=='Old_Renovated',]$value+stock_seg_ER[stock_seg_ER$Year==2050 & stock_seg_ER$`Housing Segment`=='Old_Unrenovated',]$value)
-
-rs_base_all_ER$Segment<-"Old_Renovated"
-rs_base_all_ER[rs_base_all_ER$Vintage %in% c("2020s","2030s","2040s","2050s"),]$Segment<-"New"
-rs_base_all_ER[!rs_base_all_ER$Segment=="New" & rs_base_all_ER$Year==2020,]$Segment<-"Old_Unrenovated"
 
 # Energy intensity in new, renovated, and unrenovated housing by year. Can be done with tapply instead if we make columns for Tot_m2_2020, Tot_m2_2025, etc., as done for Tot_GJ and EnGHG etc.
 EI_RR_New<-1000*colSums(rs_base_all_RR[rs_base_all_RR$Segment=="New",167:175])/
@@ -896,7 +896,7 @@ EI_seg<-data.frame(Year=seq(2020,2060,5),New=EI_RR_New,RR_OldUnRen=EI_RR_OU,RR_O
                    AR_OldUnRen=EI_AR_OU,AR_OldRen=EI_AR_OR,
                    ER_OldUnRen=EI_ER_OU,ER_OldRen=EI_ER_OR)
 
-write.csv(EI_seg,file="../Supplementary_results/EI_seg_base.csv")
+write.csv(EI_seg,file="../Final_results/supp_Tab4.csv")
 rm(list=ls(pattern = "EI_"))
 
 # make graphs of housing stock characteristics using dplyr pipe ##########
@@ -923,7 +923,6 @@ rs_base_NC[,c("EnGHGkg_G20_2020","EnGHGkg_G20_2025","EnGHGkg_G20_2030","EnGHGkg_
   (rs_base_NC$Elec_GJ*rs_base_NC[,c("GHG_int_2020", "GHG_int_2020","GHG_int_2020","GHG_int_2020","GHG_int_2020","GHG_int_2020","GHG_int_2020","GHG_int_2020","GHG_int_2020")]+
      matrix(rep(rs_base_NC$Gas_GJ*GHGI_NG,9),nrow(rs_base_NC),9)+ matrix(rep(rs_base_NC$Oil_GJ*GHGI_FO,9),nrow(rs_base_NC),9)+ matrix(rep(rs_base_NC$Prop_GJ*GHGI_LP,9),nrow(rs_base_NC),9))
 
-# check these column numbers very well
 # emissions from new housing with no change in grid intensity
 New_G20<-colSums(rs_base_NC[,c("EnGHGkg_G20_2020","EnGHGkg_G20_2025","EnGHGkg_G20_2030","EnGHGkg_G20_2035","EnGHGkg_G20_2040","EnGHGkg_G20_2045","EnGHGkg_G20_2050","EnGHGkg_G20_2055","EnGHGkg_G20_2060")])*1e-9
 # emissions from new housing with grid decarbonization
@@ -933,7 +932,7 @@ New_MC<-colSums(rs_base_NC[,c("EnGHGkg_base_2020","EnGHGkg_base_2025","EnGHGkg_b
 rs_base_Old<-rs_base_all_RR[rs_base_all_RR$Building<180001 & rs_base_all_RR$Year==2020,]
 rs_base_Old<-rs_base_Old[,-c(38:45)] # remove the old wbase from 2025 on
 # need to reapply the decay factors wbase...
-load("../Intermediate_results/decayFactorsRen.RData") 
+load("../LF_Data/Intermediate_results/decayFactorsRen.RData") 
 
 rs_base_Old<-left_join(rs_base_Old,sbm,by="ctyTC")
 
@@ -1299,15 +1298,15 @@ rm(list=ls(pattern = "New"))
 rm(list=ls(pattern = "Old"))
 
 # second RFA scripts #########
-load("../Final_results/res_baseRFA_RR.RData")
-load("../Final_results/res_baseRFA_AR.RData")
-load("../Final_results/res_baseRFA_ER.RData")
-load("../Final_results/res_hiDRRFA_RR.RData")
-load("../Final_results/res_hiDRRFA_AR.RData")
-load("../Final_results/res_hiDRRFA_ER.RData")
-load("../Final_results/res_hiMFRFA_RR.RData")
-load("../Final_results/res_hiMFRFA_AR.RData")
-load("../Final_results/res_hiMFRFA_ER.RData")
+load("../LF_Data/Final_results/res_baseRFA_RR.RData")
+load("../LF_Data/Final_results/res_baseRFA_AR.RData")
+load("../LF_Data/Final_results/res_baseRFA_ER.RData")
+load("../LF_Data/Final_results/res_hiDRRFA_RR.RData")
+load("../LF_Data/Final_results/res_hiDRRFA_AR.RData")
+load("../LF_Data/Final_results/res_hiDRRFA_ER.RData")
+load("../LF_Data/Final_results/res_hiMFRFA_RR.RData")
+load("../LF_Data/Final_results/res_hiMFRFA_AR.RData")
+load("../LF_Data/Final_results/res_hiMFRFA_ER.RData")
 
 # add in GHG intensities for 2035 CFE
 rs_baseRFA_all_RR[,c("GHG_int_2020_CFE","GHG_int_2025_CFE")]<-rs_baseRFA_all_RR[,c("GHG_int_2020_LRE","GHG_int_2025_LRE")]
@@ -1806,15 +1805,15 @@ rm(list=ls(pattern = "rs_"))
 rm(list=ls(pattern = "GHGelec"))
 
 # third baseDE scripts #########
-load("../Final_results/res_baseDE_RR.RData")
-load("../Final_results/res_baseDE_AR.RData")
-load("../Final_results/res_baseDE_ER.RData")
-load("../Final_results/res_hiDRDE_RR.RData")
-load("../Final_results/res_hiDRDE_AR.RData")
-load("../Final_results/res_hiDRDE_ER.RData")
-load("../Final_results/res_hiMFDE_RR.RData")
-load("../Final_results/res_hiMFDE_AR.RData")
-load("../Final_results/res_hiMFDE_ER.RData")
+load("../LF_Data/Final_results/res_baseDE_RR.RData")
+load("../LF_Data/Final_results/res_baseDE_AR.RData")
+load("../LF_Data/Final_results/res_baseDE_ER.RData")
+load("../LF_Data/Final_results/res_hiDRDE_RR.RData")
+load("../LF_Data/Final_results/res_hiDRDE_AR.RData")
+load("../LF_Data/Final_results/res_hiDRDE_ER.RData")
+load("../LF_Data/Final_results/res_hiMFDE_RR.RData")
+load("../LF_Data/Final_results/res_hiMFDE_AR.RData")
+load("../LF_Data/Final_results/res_hiMFDE_ER.RData")
 
 # add in GHG intensities for 2035 CFE
 rs_baseDE_all_RR[,c("GHG_int_2020_CFE","GHG_int_2025_CFE")]<-rs_baseDE_all_RR[,c("GHG_int_2020_LRE","GHG_int_2025_LRE")]
@@ -2476,15 +2475,15 @@ rm(list=ls(pattern = "rs_"))
 rm(list=ls(pattern = "GHGelec"))
 
 # FOURTH DERFA scripts #########
-load("../Final_results/res_baseDERFA_RR.RData")
-load("../Final_results/res_baseDERFA_AR.RData")
-load("../Final_results/res_baseDERFA_ER.RData")
-load("../Final_results/res_hiDRDERFA_RR.RData")
-load("../Final_results/res_hiDRDERFA_AR.RData")
-load("../Final_results/res_hiDRDERFA_ER.RData")
-load("../Final_results/res_hiMFDERFA_RR.RData")
-load("../Final_results/res_hiMFDERFA_AR.RData")
-load("../Final_results/res_hiMFDERFA_ER.RData")
+load("../LF_Data/Final_results/res_baseDERFA_RR.RData")
+load("../LF_Data/Final_results/res_baseDERFA_AR.RData")
+load("../LF_Data/Final_results/res_baseDERFA_ER.RData")
+load("../LF_Data/Final_results/res_hiDRDERFA_RR.RData")
+load("../LF_Data/Final_results/res_hiDRDERFA_AR.RData")
+load("../LF_Data/Final_results/res_hiDRDERFA_ER.RData")
+load("../LF_Data/Final_results/res_hiMFDERFA_RR.RData")
+load("../LF_Data/Final_results/res_hiMFDERFA_AR.RData")
+load("../LF_Data/Final_results/res_hiMFDERFA_ER.RData")
 
 # add in GHG intensities for 2035 CFE
 rs_baseDERFA_all_RR[,c("GHG_int_2020_CFE","GHG_int_2025_CFE")]<-rs_baseDERFA_all_RR[,c("GHG_int_2020_LRE","GHG_int_2025_LRE")]
@@ -3166,7 +3165,7 @@ GHG_hiMFDERFA_AR_CFE$OldElecGHG[1:6]<-GHG_hiMFDERFA_AR_LREC$OldElecGHG[1:6] # 20
 GHG_hiMFDERFA_AR_CFE$NewElecGHG[1:6]<-GHG_hiMFDERFA_AR_LREC$NewElecGHG[1:6] # 2020:2025 same as LRE
 GHG_hiMFDERFA_AR_CFE$OldElecGHG[16:41]<-GHG_hiMFDERFA_AR_CFE$NewElecGHG[16:41]<-0
 
-# maybe unneccesary, but if desired can used these lines to estiamte percentage contributions of sources to overall emissions
+# If desired can used these lines to estiamte percentage contributions of sources to overall emissions
 # GHG_hiMFDERFA_AR$EmGHG_pc<-GHG_hiMFDERFA_AR$EmGHG/GHG_hiMFDERFA_AR$EmGHG[1]
 # GHG_hiMFDERFA_AR$TotGHG_pc<-GHG_hiMFDERFA_AR$TotGHG/GHG_hiMFDERFA_AR$TotGHG[1]
 # GHG_hiMFDERFA_AR$OilGHG_pc<-rowSums(GHG_hiMFDERFA_AR[,c("OldOilGHG","NewOilGHG")])/GHG_hiMFDERFA_AR$OldOilGHG[1]
@@ -3286,6 +3285,7 @@ rm(list=ls(pattern = "rs_"))
 rm(list=ls(pattern = "GHGelec"))
 rm(list=ls(pattern = "New"))
 rm(list=ls(pattern = "Old"))
+rm(r,r2,r3)
 
 # combine results
 GHGall<-data.frame(matrix(ncol = 9,nrow=0))
@@ -3319,33 +3319,37 @@ GHGall[GHGall$CharScen=="D",]$`New House Chars`<-"D. RFA + IE"
 GHGall$StockScenario<-"1 Baseline"
 GHGall[GHGall$StockScen=="2",]$StockScenario<-"2 Hi Turnover"
 GHGall[GHGall$StockScen=="3",]$StockScenario<-"3 Hi Multifamily"
-# here i save all of the GHG files
-save(GHGall,file="../Final_results/GHGall_new.RData")
+GHGall$UniqScen<-paste(GHGall$StockScen,GHGall$CharScen,GHGall$RenScen,GHGall$ElecScen,sep="_")
+GHGall$ElecRen<-paste(GHGall$ElecScen,GHGall$RenScen,sep="_")
+
+# here i save all of the GHG files, it is a small file, can be shared on github
+save(GHGall,file="../Final_results/GHGall.RData")
+# also save as a csv file, as the underlying data for Fig. 1
+write.csv(GHGall,'../Figure_Results_Data/Fig1.csv',row.names = FALSE)
+
 
 # if desired can run from here, loading in GHGall_new.RData if already created
 # load("../Final_results/GHGall_new.RData")
 # first make Fig 1 plots #
 # try new, with all plots together.
-GHGall$UniqScen<-paste(GHGall$StockScen,GHGall$CharScen,GHGall$RenScen,GHGall$ElecScen,sep="_")
-GHGall$ElecRen<-paste(GHGall$ElecScen,GHGall$RenScen,sep="_")
+
 
 ghg<-GHGall[!GHGall$RenScen=="NR",] # exclude the no ren scenario
 ghg$`Elec_Ren Scen` <-factor(ghg$ElecRen,ordered = TRUE,
                        levels=c("MC_RR","MC_AR","MC_ER","LREC_RR","LREC_AR","LREC_ER","CFE_RR","CFE_AR","CFE_ER"))
-write.csv(ghg[,1:13],'../Figures/MainText/Fig1.csv',row.names = FALSE)
 
 # alternative color schemes
-obg<-c("#8C2D04","#F16913","#FDAE6B","#084594","#6BAED6","#C6DBEF","#005A32","#41AB5D","#A1D99B") # oranges blues greens
-rbo<-c("#99000D", "#FB6A4A","#FCBBA1" ,"#084594","#6BAED6","#C6DBEF","#8C2D04","#F16913","#FDAE6B")
-rbg<-c("#99000D", "#FB6A4A","#FCBBA1" ,"#084594","#6BAED6","#C6DBEF","#005A32","#41AB5D","#A1D99B")
-
-obg2<-c("#C35803","#D69B1D","#F0E442","#084594","#6BAED6","#C6DBEF","#005A32","#41AB5D","#A1D99B")
-
-ibm9<-c('#648FFF','#5459E8','#353EB9','#BB0579','#DC267F','#F76DEA','#FE6100','#FFB000','#F3E94E')
-
-ibm3<-c('#648FFF','#DC267F','#FFB000')
-
-ibmx<-c('#3c5699','#648fff','#a2bcff','#9a1b59','#dc267f','#ea7db2','#983a00','#fe6100','#fea066')
+# obg<-c("#8C2D04","#F16913","#FDAE6B","#084594","#6BAED6","#C6DBEF","#005A32","#41AB5D","#A1D99B") # oranges blues greens
+# rbo<-c("#99000D", "#FB6A4A","#FCBBA1" ,"#084594","#6BAED6","#C6DBEF","#8C2D04","#F16913","#FDAE6B")
+# rbg<-c("#99000D", "#FB6A4A","#FCBBA1" ,"#084594","#6BAED6","#C6DBEF","#005A32","#41AB5D","#A1D99B")
+# 
+# obg2<-c("#C35803","#D69B1D","#F0E442","#084594","#6BAED6","#C6DBEF","#005A32","#41AB5D","#A1D99B")
+# 
+# ibm9<-c('#648FFF','#5459E8','#353EB9','#BB0579','#DC267F','#F76DEA','#FE6100','#FFB000','#F3E94E')
+# 
+# ibm3<-c('#648FFF','#DC267F','#FFB000')
+# 
+# ibmx<-c('#3c5699','#648fff','#a2bcff','#9a1b59','#dc267f','#ea7db2','#983a00','#fe6100','#fea066')
 
 obg12<-c("#8C2D04","#F16913","#FDAE6B","#F9EFE9", # oranges
          "#084594","#308FF1","#64CAE8","#d5e7f2", # blues
@@ -3375,9 +3379,9 @@ ghgp<-rbind(ghg[,c('Year','UniqScen','Scenario','TotGHG')],ghgm[,c('Year','UniqS
 ghgp$Scenario<-factor(ghgp$Scenario,levels = c('MC_RR_avg','MC_AR_avg','MC_ER_avg','MC_all',
                                                'LREC_RR_avg','LREC_AR_avg','LREC_ER_avg','LREC_all',
                                                'CFE_RR_avg','CFE_AR_avg','CFE_ER_avg','CFE_all'))
-# this is the final figure 1, save manually as pdf, it produces a better result than the pdf()function.
+# this is figure 1, save manually as pdf, it produces a better result than the pdf()function.
 windows(width = 7,height = 5.4)
-#pdf("../Figures/MainText/rplot.pdf",width = 7,height = 5.4) 
+
 ggplot(ghgp,aes(Year,TotGHG,group=UniqScen)) + geom_line(aes(color=Scenario),size=0.5,alpha=0.85) + 
   scale_y_continuous(labels = scales::comma,limits = c(0,960)) + scale_x_continuous(limits = c(2020,2064)) +
   scale_color_manual(values=obg12) +theme_bw() + 
@@ -3390,8 +3394,6 @@ ggplot(ghgp,aes(Year,TotGHG,group=UniqScen)) + geom_line(aes(color=Scenario),siz
   geom_segment(aes(x=2048,xend=2052,y=0,yend=0),linetype="dashed")+geom_text(x=2050, y=20, label="Net-Zero",size=3.5) + geom_point(data=zdf,aes(x=xa,y=ya,group=1)) +
   labs(title ="Annual Emissions by Electricity and Renovation Scenario",y="Mton CO2e/yr") +
   theme(axis.text=element_text(size=10),axis.title=element_text(size=11,face = "bold"),plot.title = element_text(size = 11),legend.key.width = unit(0.8,'cm'))
-# Close the pdf file, if using pdf() function to save
-# dev.off() 
 
 # calculate cumulative emissions
 cum_emission<-tapply(GHGall$TotGHG,list(GHGall$Housing_Scenario,GHGall$RenScen,GHGall$ElecScen),sum)
@@ -3404,13 +3406,10 @@ write.csv(cem2,file="../Final_results/CumEmissions.csv",row.names = FALSE)
 
 # now differenecs between cumulative emissions for a area or cascade chart
 
-# GHG_base_NR[,c("Housing_Scenario","CharScenario","StockScenario")]<-rep(c("No Renovation","A. Base","1 Baseline"),each=41)
-# GHG_base_NR_G20[,c("Housing_Scenario","CharScenario","StockScenario")]<-rep(c("No Ren., 2020 Elec Grid","A. Base","1 Baseline"),each=41)
-# GHGall<-rbind(GHGall,GHG_base_NR,GHG_base_NR_G20)
 GHGall[GHGall$RenScen=="NR" & GHGall$ElecScen=="MC",]$Housing_Scenario<-"No Renovation"
 GHGall[GHGall$RenScen=="NR" & GHGall$ElecScen=="G20",]$Housing_Scenario<-"No Ren., 2020 Elec Grid"
 
-# new ordering of strategies, including CFE35 
+# difference in ammual emissions between scenarios
 GHGdff<-rbind(GHGall[GHGall$StockScen==1&GHGall$CharScen=="A"&GHGall$ElecScen=="G20"&GHGall$RenScen=="NR",], # G20, no ren
               GHGall[GHGall$StockScen==1&GHGall$CharScen=="A"&GHGall$ElecScen=="MC"&GHGall$RenScen=="NR",], # Mid-Case Elec
               GHGall[GHGall$StockScen==1&GHGall$CharScen=="A"&GHGall$ElecScen=="MC"&GHGall$RenScen=="RR",], # Reg Ren
@@ -3461,20 +3460,21 @@ GHGln[GHGln$Housing_Scenario=="1A Baseline",]$Scenario<-"1A Baseline, RR, Mid-Ca
 GHGln[GHGln$Housing_Scenario=="3D High Multifamily IE & RFA",]$Scenario<-"3D High MF IE & RFA, ER, CFE Elec"
 GHGln[GHGln$Housing_Scenario=="No Ren., 2020 Elec Grid",]$Scenario<-"1A Baseline, NR, 2020 Elec"
 
+# define colour palettes 
 bop<-c("#2171B5","#9ECAE1","#D94801","#FD8D3C","#7A0177","#DD3497","#FA9FB5")
 colarea<-c("#D5D6DE","8D8E91",bop,"#F5F5DC")
 colln<-colorRampPalette(brewer.pal(4,"Set1"))(2)
 colln<-c('tan4','black','blue')
+
 windows(width = 9,height = 6.2)
 ggplot() + geom_area(data=GHGdff,aes(Year,DiffGHG,fill=Strategy)) + geom_line(data=GHGln,aes(Year,TotGHG,color=Scenario),size=1,linetype="longdash") + scale_y_continuous(breaks = seq(0,1200,200),limits = c(0,1000)) +
   labs(title ="a) GHG reduction potential by sequential strategy adoption",y="Mton CO2e/yr",subtitle = "Strategy Group Order: Grid, Renovation, New Housing Chars/Stock Evolution") + theme_classic() + 
   scale_fill_manual(values=colarea)  + scale_color_manual(values=colln) +
   theme(axis.text=element_text(size=11),axis.title=element_text(size=12, face = "bold"),plot.title = element_text(size = 12),
         legend.key.width = unit(1,'cm'),legend.text =  element_text(size = 10)) + guides(linetype=guide_legend(order=1),color=guide_legend(order=2))
-write.csv(GHGdff,'../Figures/SI_Other/S31a.csv',row.names = FALSE)
+write.csv(GHGdff,'../Figure_Results_Data/S31a.csv',row.names = FALSE)
 
 # repeat Fig with different order
-# new ordering of strategies, including CFE35 
 GHGdff2<-rbind(GHGall[GHGall$StockScen==1&GHGall$CharScen=="A"&GHGall$ElecScen=="G20"&GHGall$RenScen=="NR",], # G20, no ren
               GHGall[GHGall$StockScen==1&GHGall$CharScen=="A"&GHGall$ElecScen=="MC"&GHGall$RenScen=="NR",], # Mid-Case Elec
               GHGall[GHGall$StockScen==1&GHGall$CharScen=="A"&GHGall$ElecScen=="MC"&GHGall$RenScen=="RR",], # Reg Ren
@@ -3527,7 +3527,7 @@ ggplot() + geom_area(data=GHGdff2,aes(Year,DiffGHG,fill=Strategy)) + geom_line(d
   scale_fill_manual(values=colarea)  + scale_color_manual(values=colln) +
   theme(axis.text=element_text(size=11),axis.title=element_text(size=12, face = "bold"),plot.title = element_text(size = 12),
         legend.key.width = unit(1,'cm'),legend.text =  element_text(size = 10)) + guides(linetype=guide_legend(order=1),color=guide_legend(order=2))
-write.csv(GHGdff2,'../Figures/SI_Other/S31b.csv',row.names = FALSE)
+write.csv(GHGdff2,'../Figure_Results_Data/S31b.csv',row.names = FALSE)
 
 # Emissions from construction, and fuel use in new and old construction, Fig 3 #########
 # 1
@@ -3542,13 +3542,11 @@ g_base_RR$Source<-ordered(g_base_RR$Source,levels=c('Elec New','Elec Existing','
 g_base_RR_LREC<-melt(GHG_base_RR_LREC[,c("Year","StockScen","CharScen","RenScen","ElecScen","EmGHG","RenGHG","OldOilGHG","NewOilGHG","OldGasGHG","NewGasGHG","OldElecGHG","NewElecGHG")],id.vars = c("Year","StockScen","CharScen","RenScen","ElecScen"))
 names(g_base_RR_LREC)[6:7]<-c("Var","GHG")
 g_base_RR_LREC$Source<-g_base_RR_LREC$Var
-# levels(g_base_RR_LREC$Source)<-list("Emb. Constr." = "EmGHG","Emb. Renov." = "RenGHG","Oil <2020"="OldOilGHG","Oil >2020" = "NewOilGHG",
-#                                "Gas <2020"="OldGasGHG","Gas >2020" = "NewGasGHG",
-#                                "Elec <2020"="OldElecGHG","Elec >2020" = "NewElecGHG")
+
 levels(g_base_RR_LREC$Source)<-list("Emb. Constr." = "EmGHG","Emb. Renov." = "RenGHG","Oil Existing"="OldOilGHG","Oil New" = "NewOilGHG",
                                     "Gas Existing"="OldGasGHG","Gas New" = "NewGasGHG",
                                     "Elec Existing"="OldElecGHG","Elec New" = "NewElecGHG")
-# g_base_RR_LREC$Source2<-ordered(g_base_RR_LREC$Source,levels=c('Elec New','Elec Existing','Gas New','Gas Existing','Oil New','Oil Existing','Emb. Renov.','Emb. Constr.'))
+
 g_base_RR_LREC$Source<-ordered(g_base_RR_LREC$Source,levels=c('Elec New','Elec Existing','Gas New','Gas Existing','Oil New','Oil Existing','Emb. Renov.','Emb. Constr.'))
 # 2b
 g_base_RR_CFE<-melt(GHG_base_RR_CFE[,c("Year","StockScen","CharScen","RenScen","ElecScen","EmGHG","RenGHG","OldOilGHG","NewOilGHG","OldGasGHG","NewGasGHG","OldElecGHG","NewElecGHG")],id.vars = c("Year","StockScen","CharScen","RenScen","ElecScen"))
@@ -3621,9 +3619,9 @@ levels(g_hiMFDERFA_ER_CFE$Source)<-list("Emb. Constr." = "EmGHG","Emb. Renov." =
 g_hiMFDERFA_ER_CFE$Source<-factor(g_hiMFDERFA_ER_CFE$Source,levels=c('Elec New','Elec Existing','Gas New','Gas Existing','Oil New','Oil Existing','Emb. Renov.','Emb. Constr.'))
 
 save(g_base_RR,g_base_RR_LREC,g_base_RR_CFE,g_base_ER,g_base_ER_LREC,g_base_ER_CFE,
-     g_hiDRDERFA_ER_LREC,g_hiDRDERFA_ER_CFE,g_hiMFDERFA_ER_LREC,g_hiMFDERFA_ER_CFE,file="../Final_results/GHG_Source_new.RData")
+     g_hiDRDERFA_ER_LREC,g_hiDRDERFA_ER_CFE,g_hiMFDERFA_ER_LREC,g_hiMFDERFA_ER_CFE,file="../Final_results/GHG_Source.RData")
 # load("../Final_results/GHG_Source_new.RData")
-# now make a dual axis version of Fig 3
+# now make dual axis Fig 3
 # base emissions
 GHG_base_RR$CumGHG<-GHG_base_RR$TotGHG
 for (k in 2:41) {
@@ -3661,12 +3659,12 @@ ggplot(g_base_RR_LREC) + geom_bar(aes(x=Year,y=GHG,fill=`Ann. Emissions`), posit
         plot.title = element_text(size = 14),plot.subtitle = element_text(size=13,face ="bold"),
         legend.text=element_text(size=12),legend.title = element_text(face="bold"))
 
-write.csv(g_base_RR_LREC,'../Figures/MainText/Fig3b_ann.csv',row.names = FALSE)
+write.csv(g_base_RR_LREC,'../Figure_Results_Data/Fig3b_ann.csv',row.names = FALSE)
 cc$Scenario<-'1_A_RR_MC'
 cc[cc$`Cum. Emissions`=="Featured scenario",]$Scenario<-"1_A_RR_LREC"
-write.csv(cc,'../Figures/MainText/Fig3b_cum.csv',row.names = FALSE)
+write.csv(cc,'../Figure_Results_Data/Fig3b_cum.csv',row.names = FALSE)
 # To read in the results file for plotting later, use following lines
-# cc<-read.csv('../Figures/MainText/Fig3b_cum.csv')
+# cc<-read.csv('../Figure_Results_Data/Fig3b_cum.csv')
 # names(cc)[3]<-'Cum. Emissions'
 
 
@@ -3697,12 +3695,12 @@ ggplot(g_base_ER) + geom_bar(aes(x=Year,y=GHG,fill=`Ann. Emissions`), position="
         plot.title = element_text(size = 14),plot.subtitle = element_text(size=13,face="bold"),
         legend.text=element_text(size=12),legend.title = element_text(face="bold"))
 
-write.csv(g_base_ER,'../Figures/MainText/Fig3a_ann.csv',row.names = FALSE)
+write.csv(g_base_ER,'../Figure_Results_Data/Fig3a_ann.csv',row.names = FALSE)
 cc$Scenario<-'1_A_RR_MC'
 cc[cc$`Cum. Emissions`=="Featured scenario",]$Scenario<-"1_A_ER_MC"
-write.csv(cc,'../Figures/MainText/Fig3a_cum.csv',row.names = FALSE)
+write.csv(cc,'../Figure_Results_Data/Fig3a_cum.csv',row.names = FALSE)
 # To read in the results file for plotting later, use following lines
-# cc<-read.csv('../Figures/MainText/Fig3a_cum.csv')
+# cc<-read.csv('../Figure_Results_Data/Fig3a_cum.csv')
 # names(cc)[3]<-'Cum. Emissions'
 
 
@@ -3731,11 +3729,11 @@ ggplot(g_hiMFDERFA_ER_LREC) + geom_bar(aes(x=Year,y=GHG,fill=`Ann. Emissions`), 
         axis.title.y.right = element_text(angle=90),
         plot.title = element_text(size = 14),plot.subtitle = element_text(size=13,face="bold"),
         legend.text=element_text(size=12),legend.title = element_text(face="bold"))
-write.csv(g_hiMFDERFA_ER_LREC,'../Figures/MainText/Fig3c_ann.csv',row.names = FALSE)
+write.csv(g_hiMFDERFA_ER_LREC,'../Figure_Results_Data/Fig3c_ann.csv',row.names = FALSE)
 cc$Scenario<-'1_A_RR_MC'
 cc[cc$`Cum. Emissions`=="Featured scenario",]$Scenario<-"3_D_ER_LREC"
-write.csv(cc,'../Figures/MainText/Fig3c_cum.csv',row.names = FALSE)
-# cc<-read.csv('../Figures/MainText/Fig3c_cum.csv')
+write.csv(cc,'../Figure_Results_Data/Fig3c_cum.csv',row.names = FALSE)
+# cc<-read.csv('../Figure_Results_Data/Fig3c_cum.csv')
 # names(cc)[3]<-'Cum. Emissions'
 
 # 3d hiMFDERFA ER_CFE
@@ -3763,16 +3761,13 @@ ggplot(g_hiMFDERFA_ER_CFE) + geom_bar(aes(x=Year,y=GHG,fill=`Ann. Emissions`), p
         axis.title.y.right = element_text(angle=90),
         plot.title = element_text(size = 14),plot.subtitle = element_text(size=13,face="bold"),
         legend.text=element_text(size=12),legend.title = element_text(face="bold"))
-write.csv(g_hiMFDERFA_ER_LREC,'../Figures/MainText/Fig3d_ann.csv',row.names = FALSE)
+write.csv(g_hiMFDERFA_ER_LREC,'../Figure_Results_Data/Fig3d_ann.csv',row.names = FALSE)
 cc$Scenario<-'1_A_RR_MC'
 cc[cc$`Cum. Emissions`=="Featured scenario",]$Scenario<-"3_D_ER_CFE"
-write.csv(cc,'../Figures/MainText/Fig3d_cum.csv',row.names = FALSE)
-# cc<-read.csv('../Figures/MainText/Fig3d_cum.csv')
+write.csv(cc,'../Figure_Results_Data/Fig3d_cum.csv',row.names = FALSE)
+# cc<-read.csv('../Figure_Results_Data/Fig3d_cum.csv')
 # names(cc)[3]<-'Cum. Emissions'
 
-# save data for fig. 3
-save(g_base_RR,g_base_RR_LREC,g_base_ER,
-     g_hiMFDERFA_ER_LREC,g_hiMFDERFA_ER_CFE,file="../Figures/MainText/Fig3.RData")
 # see the ranges in emissions ####
 GHG2050<-GHGall[!GHGall$RenScen=="NR"& GHGall$Year==2050,]
 # how many make the 2050 target of 264?
