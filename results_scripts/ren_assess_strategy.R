@@ -8,7 +8,7 @@ library(reshape2)
 library(stringr)
 library(writexl)
 
-# Last Update Peter Berrill May 6 2022
+# Last Update Peter Berrill June 1 2022
 
 # Purpose: Test the benefits of individual renovation strategies in different scenarios. Make environmental-economic cost-benefit analysis of renovation strategies
 
