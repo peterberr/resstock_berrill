@@ -27,7 +27,7 @@ library(writexl)
          # - Final_results/ren_strat_summ.RData
          # - Final_results/ren_NPV.RData (large file in the LF_Data/ folder)
          # - Final_results/ren_div_sum.csv
-         # - Figure_Results_Data/ren_NPV.xlsx (slimmed down version of the RData file, but saved as an excel file)
+         # - Figure_Results_Data/ren_npv.xlsx (slimmed down version of the RData file, but saved as an excel file)
 
 load("../LF_Data/Intermediate_results/RenStandard_EG.RData")
 
@@ -898,28 +898,44 @@ save(div_rr_heat_sum,div_rr_dwh_sum,div_rr_env_sum,div_rr_heat_env_sum,
      div_er_heat_sum,div_er_dwh_sum,div_er_env_sum,div_er_heat_env_sum,
      file='../Final_results/ren_strat_summ.RData')
 
-# and finally the npv files
+# remove the GHG_pre column from the npv files, as they don't refer to the year signified, they refer to the year before their next renovation, and this column would be confusing as people would expect it to refer to the same year as GHG_post.
+npv_heat_RRr<-npv_heat_RRr[,!names(npv_heat_RRr) == "GHG_pre"]
+npv_dhw_RRr<-npv_dhw_RRr[,!names(npv_dhw_RRr) == "GHG_pre"]
+npv_env_RRr<-npv_env_RRr[,!names(npv_env_RRr) == "GHG_pre"]
+npv_heat_env_RRr<-npv_heat_env_RRr[,!names(npv_heat_env_RRr) == "GHG_pre"]
+
+npv_heat_ARr<-npv_heat_ARr[,!names(npv_heat_ARr) == "GHG_pre"]
+npv_dhw_ARr<-npv_dhw_ARr[,!names(npv_dhw_ARr) == "GHG_pre"]
+npv_env_ARr<-npv_env_ARr[,!names(npv_env_ARr) == "GHG_pre"]
+npv_heat_env_ARr<-npv_heat_env_ARr[,!names(npv_heat_env_ARr) == "GHG_pre"]
+
+npv_heat_ERr<-npv_heat_ERr[,!names(npv_heat_ERr) == "GHG_pre"]
+npv_dhw_ERr<-npv_dhw_ERr[,!names(npv_dhw_ERr) == "GHG_pre"]
+npv_env_ERr<-npv_env_ERr[,!names(npv_env_ERr) == "GHG_pre"]
+npv_heat_env_ERr<-npv_heat_env_ERr[,!names(npv_heat_env_ERr) == "GHG_pre"]
+
+# and finally save the npv files
 save(npv_heat_RRr,npv_dhw_RRr,npv_env_RRr,npv_heat_env_RRr,
      npv_heat_ARr,npv_dhw_ARr,npv_env_ARr,npv_heat_env_ARr,
      npv_heat_ERr,npv_dhw_ERr,npv_env_ERr,npv_heat_env_ERr,
      file='../Final_results/ren_NPV.RData')
 
 # reduce the size of the npv files and save as xlsx
-npv_heat_RRr_mini<-npv_heat_RRr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
-npv_heat_ARr_mini<-npv_heat_ARr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
-npv_heat_ERr_mini<-npv_heat_ERr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_heat_RRr_mini<-npv_heat_RRr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_heat_ARr_mini<-npv_heat_ARr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_heat_ERr_mini<-npv_heat_ERr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
 
-npv_dhw_RRr_mini<-npv_dhw_RRr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
-npv_dhw_ARr_mini<-npv_dhw_ARr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
-npv_dhw_ERr_mini<-npv_dhw_ERr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_dhw_RRr_mini<-npv_dhw_RRr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_dhw_ARr_mini<-npv_dhw_ARr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_dhw_ERr_mini<-npv_dhw_ERr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
 
-npv_env_RRr_mini<-npv_env_RRr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
-npv_env_ARr_mini<-npv_env_ARr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
-npv_env_ERr_mini<-npv_env_ERr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_env_RRr_mini<-npv_env_RRr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_env_ARr_mini<-npv_env_ARr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_env_ERr_mini<-npv_env_ERr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
 
-npv_heat_env_RRr_mini<-npv_heat_env_RRr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
-npv_heat_env_ARr_mini<-npv_heat_env_ARr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
-npv_heat_env_ERr_mini<-npv_heat_env_ERr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_pre','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_heat_env_RRr_mini<-npv_heat_env_RRr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_heat_env_ARr_mini<-npv_heat_env_ARr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
+npv_heat_env_ERr_mini<-npv_heat_env_ERr[,c('Year_Building','Census.Division','Fuel_pre_post','pre_post','GHG_post','redn_GHG_abs','CapEx','OpEx','NPV','NPVc','GHG_abate_cost_LREC','GHG_redn_cum_LRE')]
 
 write_xlsx(list(heat_npv_RR = npv_heat_RRr_mini, heat_npv_AR = npv_heat_ARr_mini, heat_npv_ER = npv_heat_ERr_mini,
                 dhw_npv_RR = npv_dhw_RRr_mini, dhw_npv_AR = npv_dhw_ARr_mini, dhw_npv_ER = npv_dhw_ERr_mini,

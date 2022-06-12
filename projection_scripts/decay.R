@@ -10,7 +10,7 @@ setwd("~/Yale Courses/Research/Final Paper/resstock_projections/projection_scrip
 # Inputs: - County_Scenario_SM_Results.RData, summary of housing stock model by county for each year 2020-2060, from Berrill & Hertwich https://doi.org/10.5334/bc.126, available on request from peter.berrill@aya.yale.edu
 #         - ctycode.RData, county FIPS code and name
 # Outputs: 
-#         - Intermediate_results/decayFactors.RData
+#         - Intermediate_results/decayFactors.RData, this is actually not used in another script (it has been replaced by the other two decayFactors files), and does not need saved.
 #         - Intermediate_results/decayFactorsRen.RData, for use in describing decay of <2020 stock only in the renovation scenarios
 #         - Intermediate_results/decayFactorsProj.RData, for projecting the decay of housing stock including future cohorts built after 2020
 

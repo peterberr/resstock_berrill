@@ -72,6 +72,10 @@ library(reshape2)
 #         - Final_results/res_hiDRDERFA_RR.RData, energy and GHG for entire (old and new) housing stock, with hiDR (hiTO) stock & deep (intensive) electrification, reduced floor area new housing characteristics
 #         - Final_results/res_hiDRDERFA_AR.RData, energy and GHG for entire (old and new) housing stock, with hiDR (hiTO) stock & deep (intensive) electrification, reduced floor area new housing characteristics
 #         - Final_results/res_hiDRDERFA_ER.RData, energy and GHG for entire (old and new) housing stock, with hiDR (hiTO) stock & deep (intensive) electrification, reduced floor area new housing characteristics
+#         - similar as hiDR for all hiMF outputs, e.g. rs_hiMF_EG.RData, etc.
+
+
+
 
 setwd("~/Yale Courses/Research/Final Paper/resstock_projections/results_scripts")
 
@@ -81,7 +85,7 @@ load("../Intermediate_results/agg_bscsv.RData")
 # other data needing loaded for all scenarios
 load("../Intermediate_results/decayFactorsProj.RData") 
 
-load("../ExtData/ctycode.RData") # from the HSM repo
+load("../ExtData/ctycode.RData") # 
 load("../ExtData/GHGI_MidCase.RData") # Elec GHG int data in Mid-Case scenario
 load("../ExtData/GHGI_LowRECost.RData") # Elec GHG int data in Low RE Cost Scenario
 ctycode_num<-ctycode
@@ -190,7 +194,7 @@ load("../Eagle_outputs/Complete_results/res_base_final.RData")
 rsbase_base<-rsn
 rm(rsn)
 
-nce<-read.csv("../../HSM_github/HSM_results/NewConEstimates.csv")
+nce<-read.csv("ExtData/NewConEstimates.csv")
 nce<-nce[2:9,]
 names(nce)<-c("Year","base","hiDR","hiMF","hiDRMF")
 nce$Year<-seq(2025,2060,5)
