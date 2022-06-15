@@ -1,0 +1,52 @@
+"Cohort","Type","Characteristics","FloorArea"
+"<1940","MF","Base",90.84
+"<1940","MH","Base",80
+"<1940","SF","Base",179.18
+"1940s","MF","Base",81.33
+"1940s","MH","Base",85
+"1940s","SF","Base",154.88
+"1950s","MF","Base",80.07
+"1950s","MH","Base",109.7
+"1950s","SF","Base",153.55
+"1960s","MF","Base",82.05
+"1960s","MH","Base",98.95
+"1960s","SF","Base",176.52
+"1970s","MF","Base",80.87
+"1970s","MH","Base",100.97
+"1970s","SF","Base",173.2
+"1980s","MF","Base",87.01
+"1980s","MH","Base",116.38
+"1980s","SF","Base",202.34
+"1990s","MF","Base",86.16
+"1990s","MH","Base",116.98
+"1990s","SF","Base",206.49
+"2000s","MF","Base",94.5
+"2000s","MH","Base",132.31
+"2000s","SF","Base",240.27
+"2010s","MF","Base",89.44
+"2010s","MH","Base",127.69
+"2010s","SF","Base",258.31
+"2020s","MF","Base",89.44
+"2020s","MH","Base",127.69
+"2020s","SF","Base",258.31
+"2030s","MF","Base",89.44
+"2030s","MH","Base",127.69
+"2030s","SF","Base",258.31
+"2040s","MF","Base",89.44
+"2040s","MH","Base",127.69
+"2040s","SF","Base",258.31
+"2050s","MF","Base",89.44
+"2050s","MH","Base",127.69
+"2050s","SF","Base",258.31
+"2020s","MF","Reduced FA",87.86
+"2020s","MH","Reduced FA",125.99
+"2020s","SF","Reduced FA",192.63
+"2030s","MF","Reduced FA",88.38
+"2030s","MH","Reduced FA",125.96
+"2030s","SF","Reduced FA",192.92
+"2040s","MF","Reduced FA",88.55
+"2040s","MH","Reduced FA",125.78
+"2040s","SF","Reduced FA",193.08
+"2050s","MF","Reduced FA",88.72
+"2050s","MH","Reduced FA",125.96
+"2050s","SF","Reduced FA",193.01

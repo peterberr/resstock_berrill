@@ -27,7 +27,7 @@ load("../Intermediate_results/rs_base_EG.RData")
 load("../Intermediate_results/rs_hiDR_EG.RData")
 load("../Intermediate_results/rs_hiMF_EG.RData")
 load("../ExtData/ctycode.RData")
-load("~/Yale Courses/Research/Final Paper/HSM_github/HSM_results/County_Scenario_SM_Results.RData") # load in stock model results, from https://github.com/peterberr/US_county_HSM
+load("../LF_Data/HSM/County_Scenario_SM_Results.RData") # load in stock model results, from https://github.com/peterberr/US_county_HSM, available in the Large File (LF) data repository
 
 # start a dataframe in which to extract the unit totals 
 smop_base_HUTC<-smop_base[,1:2]

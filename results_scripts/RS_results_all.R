@@ -3330,7 +3330,7 @@ write.csv(GHGall,'../Figure_Results_Data/Fig1.csv',row.names = FALSE)
 
 
 # if desired can run from here, loading in GHGall_new.RData if already created
-# load("../Final_results/GHGall_new.RData")
+# load("../Final_results/GHGall.RData")
 # first make Fig 1 plots #
 # try new, with all plots together.
 
@@ -3338,19 +3338,6 @@ write.csv(GHGall,'../Figure_Results_Data/Fig1.csv',row.names = FALSE)
 ghg<-GHGall[!GHGall$RenScen=="NR",] # exclude the no ren scenario
 ghg$`Elec_Ren Scen` <-factor(ghg$ElecRen,ordered = TRUE,
                        levels=c("MC_RR","MC_AR","MC_ER","LREC_RR","LREC_AR","LREC_ER","CFE_RR","CFE_AR","CFE_ER"))
-
-# alternative color schemes
-# obg<-c("#8C2D04","#F16913","#FDAE6B","#084594","#6BAED6","#C6DBEF","#005A32","#41AB5D","#A1D99B") # oranges blues greens
-# rbo<-c("#99000D", "#FB6A4A","#FCBBA1" ,"#084594","#6BAED6","#C6DBEF","#8C2D04","#F16913","#FDAE6B")
-# rbg<-c("#99000D", "#FB6A4A","#FCBBA1" ,"#084594","#6BAED6","#C6DBEF","#005A32","#41AB5D","#A1D99B")
-# 
-# obg2<-c("#C35803","#D69B1D","#F0E442","#084594","#6BAED6","#C6DBEF","#005A32","#41AB5D","#A1D99B")
-# 
-# ibm9<-c('#648FFF','#5459E8','#353EB9','#BB0579','#DC267F','#F76DEA','#FE6100','#FFB000','#F3E94E')
-# 
-# ibm3<-c('#648FFF','#DC267F','#FFB000')
-# 
-# ibmx<-c('#3c5699','#648fff','#a2bcff','#9a1b59','#dc267f','#ea7db2','#983a00','#fe6100','#fea066')
 
 obg12<-c("#8C2D04","#F16913","#FDAE6B","#F9EFE9", # oranges
          "#084594","#308FF1","#64CAE8","#d5e7f2", # blues
@@ -3532,6 +3519,15 @@ b<-ggplot() + geom_area(data=GHGdff2,aes(Year,DiffGHG,fill=Strategy)) + geom_lin
 b
 write.csv(GHGdff2,'../Figure_Results_Data/S31b.csv',row.names = FALSE)
 
+fn<-"../Figure_Results_Data/ED_Fig2.xlsx"
+wb<-createWorkbook()
+addWorksheet(wb, "ED_Fig2a")
+writeData(wb, "ED_Fig2a", GHGdff)
+addWorksheet(wb, "ED_Fig2b")
+writeData(wb, "ED_Fig2b", GHGdff2)
+saveWorkbook(wb,file = fn,overwrite = TRUE)
+
+
 # created extended data figure 3
 windows(width = 8,height = 12)
 grid.arrange(a, b, nrow = 2)
@@ -3627,7 +3623,7 @@ g_hiMFDERFA_ER_CFE$Source<-factor(g_hiMFDERFA_ER_CFE$Source,levels=c('Elec New',
 
 save(g_base_RR,g_base_RR_LREC,g_base_RR_CFE,g_base_ER,g_base_ER_LREC,g_base_ER_CFE,
      g_hiDRDERFA_ER_LREC,g_hiDRDERFA_ER_CFE,g_hiMFDERFA_ER_LREC,g_hiMFDERFA_ER_CFE,file="../Final_results/GHG_Source.RData")
-# load("../Final_results/GHG_Source_new.RData")
+# load("../Final_results/GHG_Source.RData")
 # now make dual axis Fig 3
 # base emissions
 GHG_base_RR<-GHGall[GHGall$UniqScen=='1_A_RR_MC',]
@@ -3673,6 +3669,7 @@ write.csv(g_base_RR_LREC,'../Figure_Results_Data/Fig3b_ann.csv',row.names = FALS
 cc$Scenario<-'1_A_RR_MC'
 cc[cc$`Cumulative Emissions`=="Featured scenario",]$Scenario<-"1_A_RR_LREC"
 write.csv(cc,'../Figure_Results_Data/Fig3b_cum.csv',row.names = FALSE)
+Fig3bcum<-cc
 # To read in the results file for plotting later, use following lines
 # cc<-read.csv('../Figure_Results_Data/Fig3b_cum.csv')
 # names(cc)[3]<-'Cumulative Emissions'
@@ -3710,6 +3707,7 @@ write.csv(g_base_ER,'../Figure_Results_Data/Fig3a_ann.csv',row.names = FALSE)
 cc$Scenario<-'1_A_RR_MC'
 cc[cc$`Cumulative Emissions`=="Featured scenario",]$Scenario<-"1_A_ER_MC"
 write.csv(cc,'../Figure_Results_Data/Fig3a_cum.csv',row.names = FALSE)
+Fig3acum<-cc
 # To read in the results file for plotting later, use following lines
 # cc<-read.csv('../Figure_Results_Data/Fig3a_cum.csv')
 # names(cc)[3]<-'Cumulative Emissions'
@@ -3745,6 +3743,7 @@ write.csv(g_hiMFDERFA_ER_LREC,'../Figure_Results_Data/Fig3c_ann.csv',row.names =
 cc$Scenario<-'1_A_RR_MC'
 cc[cc$`Cumulative Emissions`=="Featured scenario",]$Scenario<-"3_D_ER_LREC"
 write.csv(cc,'../Figure_Results_Data/Fig3c_cum.csv',row.names = FALSE)
+Fig3ccum<-cc
 # cc<-read.csv('../Figure_Results_Data/Fig3c_cum.csv')
 # names(cc)[3]<-'Cumulative Emissions'
 
@@ -3778,8 +3777,33 @@ write.csv(g_hiMFDERFA_ER_LREC,'../Figure_Results_Data/Fig3d_ann.csv',row.names =
 cc$Scenario<-'1_A_RR_MC'
 cc[cc$`Cumulative Emissions`=="Featured scenario",]$Scenario<-"3_D_ER_CFE"
 write.csv(cc,'../Figure_Results_Data/Fig3d_cum.csv',row.names = FALSE)
+Fig3dcum<-cc
 # cc<-read.csv('../Figure_Results_Data/Fig3d_cum.csv')
 # names(cc)[3]<-'Cumulative Emissions'
+
+fn<-"../Figure_Results_Data/Fig3.xlsx"
+wb<-createWorkbook()
+addWorksheet(wb, "Fig3a_ann")
+writeData(wb, "Fig3a_ann", g_base_ER)
+addWorksheet(wb, "Fig3a_cum")
+writeData(wb, "Fig3a_cum", Fig3acum)
+
+addWorksheet(wb, "Fig3b_ann")
+writeData(wb, "Fig3b_ann", g_base_RR_LREC)
+addWorksheet(wb, "Fig3b_cum")
+writeData(wb, "Fig3b_cum", Fig3bcum)
+
+addWorksheet(wb, "Fig3c_ann")
+writeData(wb, "Fig3c_ann", g_hiMFDERFA_ER_LREC)
+addWorksheet(wb, "Fig3c_cum")
+writeData(wb, "Fig3c_cum", Fig3ccum)
+
+addWorksheet(wb, "Fig3d_ann")
+writeData(wb, "Fig3d_ann", g_hiMFDERFA_ER_CFE)
+addWorksheet(wb, "Fig3d_cum")
+writeData(wb, "Fig3d_cum", Fig3dcum)
+
+saveWorkbook(wb,file = fn,overwrite = TRUE)
 
 # see the ranges in emissions ####
 GHG2050<-GHGall[!GHGall$RenScen=="NR"& GHGall$Year==2050,]

@@ -16,8 +16,8 @@ setwd("~/Yale Courses/Research/Final Paper/resstock_projections/projection_scrip
 
 library(reshape2)
 library(dplyr)
-# load in county level results, quite a big file, originating from  https://github.com/peterberr/US_county_HSM but too large to store on git. Write to peter.berrill@aya.yale.edu to request the file
-load("~/Yale Courses/Research/Final Paper/HSM_github/HSM_results/County_Scenario_SM_Results.RData") 
+# load in county level results, quite a big file, originating from  https://github.com/peterberr/US_county_HSM but too large to store on git. Available from the Large File (LF) data repository
+load("~../LF_Data/HSM/County_Scenario_SM_Results.RData") 
 n<-names(smop_base[[3]][[1]])
 
 cohorts<-substr(n[50:59],17,23)

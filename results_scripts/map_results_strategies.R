@@ -3,7 +3,7 @@ cat("\014") # clear console
 # set working directory to where the results_scripts folder exists
 setwd("~/projects/Yale/resstock_projections/results_scripts/")
 
-# Last Update Peter Berrill May 8 2022
+# Last Update Peter Berrill May June 12 2022
 
 # Purpose: Map results of mitigation strategies and electricity scenario by county and state, for different scenarios
 
@@ -92,7 +92,7 @@ vars[vars$best=='DERFA',]$best2<-'IE & RFA'
 table(vars$best)
 map_data<-right_join(counties_sf,vars,by = c("county_fips" ="GeoID"))
 
-# Fig S34a, ED Figure 6a
+# Fig S34a, ED Figure 5a
 windows(8.8, 5.4)
 ggplot() +
   geom_sf(data = counties_sf, fill = 'white', color = "#ffffff", size = 0.25) +
@@ -106,7 +106,7 @@ ggplot() +
 # now without LRE
 
 map_data<-right_join(counties_sf,vars3,by = c("county_fips" ="GeoID"))
-# Fig S34b, ED Figure 6b
+# Fig S34b, ED Figure 5b
 windows(8.8, 5.4)
 ggplot() +
   geom_sf(data = counties_sf, fill = 'white', color = "#ffffff", size = 0.25) +
@@ -117,6 +117,11 @@ ggplot() +
   theme(legend.title = element_text(size = 13,face='bold'),legend.text = element_text(size = 11),legend.key.size = unit(1.4,"line"),plot.title = element_text(hjust = 0.5,vjust=0,size=15),
         legend.box.margin=margin(-20,-20,-20,-20))
 
+# save data for ED Fig 5
+ED_Fig5<-merge(vars[,c('County','GeoID','best2')],vars3[,c('County','GeoID','best4')],all.x = TRUE)
+names(ED_Fig5)[3:4]<-c('a_best_all','b_best_excl_LREC')
+
+write.csv(ED_Fig5,file='../Figure_Results_Data/ED_Fig5.csv',row.names = FALSE)
 
 # show pc reductions by county
 vars<-cty_assess[,c('County','pc_redn_ER','abs_redn_ER','pc_redn_LRE','abs_redn_LRE','pc_redn_ER_LRE','abs_redn_ER_LRE','GeoID')]
@@ -158,6 +163,9 @@ ggplot() +
 
 
 # show absolute and pc reductions by state, these are used in the main text Fig. 4, and SI Fig S32 and S33 ###########
+Fig4<-st_assess[,c('State',"pc_redn_ER","pc_redn_LRE","pc_redn_hiMF","pc_redn_DERFA","pc_redn_hiDR","pc_redn_ER_LRE","abs_redn_ER","abs_redn_LRE","abs_redn_hiMF","abs_redn_DERFA","abs_redn_hiDR","abs_redn_ER_LRE","ElecHeatShare_State","OldShare_State","SFShare_State","LargeShare_State","pop_growth_pc","GHG_int_2020")]
+write.csv(Fig4,'../Figure_Results_Data/Fig4.csv',row.names = FALSE)
+
 # first ER
 vars<-st_assess[,c('State','abs_redn_ER','pc_redn_ER')]
 map_data<-right_join(states_sf,vars,by = c("state_abbv" ="State"))
@@ -368,7 +376,7 @@ ggplot() +
   ggtitle("RTO") +
   theme(legend.title = element_text(size = 12),legend.text = element_text(size = 12),legend.key.size = unit(2,"line"),plot.title = element_text(hjust = 0.5,size=16)) 
 
-# now make the figure of GHG intensity in 2020 and in 2050 with LREC, for Fig S24 and ED Fig4
+# now make the figure of GHG intensity in 2020 and in 2050 with LREC, for Fig S24 and ED Fig3
 ghgi_gea20<-gicty_gea_LREC[gicty_gea_LREC$Year==2020,]
 ghgi_gea20[ghgi_gea20$geoid10==46113,]$geoid10<-46102 # fix Oglala Lakota
 ghgi_gea50<-gicty_gea_LREC[gicty_gea_LREC$Year==2050,]
@@ -391,6 +399,8 @@ for (k in 1:length(gea_list)) {
   gea_ghg$ghg50[k]<-mean(md[md$gea==g,]$GHG_int_50)
   
 }
+# save ED Fig3 data
+write.csv(gea_ghg[,1:3],file='../Figure_Results_Data/ED_Fig3.csv',row.names = FALSE)
 
 # 
 windows()
@@ -415,6 +425,7 @@ gea_MC<-unique(merge(gicty_gea,vars[,c('geoid10','gea')],by='geoid10')[,2:4])
 
 write.csv(gea_LREC,'../Figure_Results_Data/FigS25b.csv',row.names = FALSE)
 write.csv(gea_MC,'../Figure_Results_Data/FigS25a.csv',row.names = FALSE)
+
 
 geas<-sort(unique(gea_LREC$gea))
 
@@ -446,6 +457,12 @@ d<-ggplot(gea_LREC[gea_LREC$gea %in% geas[11:20],],aes(Year,GHG_int,group=gea)) 
 d
 
 grid.arrange(a, c,b,d,nrow = 2)
+
+names(gea_MC)[2]<-'CO2_int_MC'
+names(gea_LREC)[2]<-'CO2_int_LREC'
+# Save ED Fig 4 data
+ED_Fig4<-merge(gea_MC,gea_LREC)
+write.csv(ED_Fig5,file='../Figure_Results_Data/ED_Fig4.csv',row.names = FALSE)
 
 # see how much GHG intensity reduced by GEA region
 ghgi_gea20_50<-ghgi_gea50[,1:2]

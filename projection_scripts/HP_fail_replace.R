@@ -28,26 +28,6 @@ filenames<-c("res_RR_2025","res_RR_2030","res_RR_2035","res_RR_2040",
             "res_ER_2025","res_ER_2030","res_ER_2035","res_ER_2040",
             "res_ER_2045","res_ER_2050","res_ER_2055","res_ER_2060")
 
-# rs<-read.csv("Eagle_outputs/res_RR_2025.csv")
-# rs1<-read.csv("Eagle_outputs/HP_redo/res_RR_2025_redo.csv")
-# 
-# rs0<-rs[!rs$building_id %in% rs1$building_id,]
-# 
-# rsn<-rbind(rs0,rs1)
-# 
-# rsn<-rsn[order(rsn$building_id),]
-# identical(rs$building_id,rsn$building_id) # this should be true
-# 
-# mean(rs$simulation_output_report.total_site_energy_mbtu,na.rm = TRUE)
-# mean(rsn$simulation_output_report.total_site_energy_mbtu,na.rm = TRUE) # about a 5% increase in avg total energy for AR55
-# 
-# mean(rs$simulation_output_report.hvac_heating_capacity_w,na.rm = TRUE)
-# mean(rsn$simulation_output_report.hvac_heating_capacity_w,na.rm = TRUE) # about a 20% increase in avg heating capacity
-# 
-# mean(rs$simulation_output_report.electricity_heating_kwh,na.rm = TRUE)
-# mean(rsn$simulation_output_report.electricity_heating_kwh,na.rm = TRUE) # about a 27% increase in avg electric heating
-# 
-# save(rsn,file="Eagle_outputs/Complete_results/res_RR_2025_final.RData")
 odd<-seq(1,1001,2)
 # now do for all in a function #########
 identical_id<-rite_size<-any_dupe<-any_fail<-inc_elec_SPH<-inc_heat_cap<-inc_tot_GJ<-data.frame(df=filenames,val=rep(0,length(filenames)))

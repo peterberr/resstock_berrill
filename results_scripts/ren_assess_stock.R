@@ -50,7 +50,7 @@ setwd("~/projects/Yale/resstock_projections/results_scripts")
 # these need to be by county and house type
 load("../ExtData/US_FA_GHG_summaries.RData")
 # get summary about population growth
-load("~/Yale Courses/Research/Final Paper/HSM_github/HSM_results/County_Scenario_SM_Results_Summary.RData") # large file, based on the analysis here https://github.com/peterberr/US_county_HSM. Write to peter.berrill@aya.yale.edu to request a copy
+load("../LF_Data/HSM/County_Scenario_SM_Results_Summary.RData") # large file, based on the analysis here https://github.com/peterberr/US_county_HSM. Available from the large file (LF) data repository
 load("../ExtData/ctycode.RData")
 
 smop_base_small$pop_2020<-0

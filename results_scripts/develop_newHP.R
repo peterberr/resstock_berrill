@@ -75,7 +75,6 @@ for (y in seq(2025,2060,5)) {
 # and now for the ER scenario
 load('../LF_Data/Intermediate_results/RenExtElec_EG.RData')
 
-
 nhp_er<-data.frame(Year=seq(2025,2060,5),RenUnits=0,HP_RenUnits=0)
 
 for (y in seq(2025,2060,5)) {
@@ -112,3 +111,6 @@ b<-ggplot(hp_DE_erm,aes(Year,1E-6*Demand,fill=Source)) + geom_area(alpha=0.75)  
 
 windows(width = 6.8,height = 10.5)
 grid.arrange(a,b,nrow=2)
+
+ED_Fig6<-rbind(hp_base_rrm,hp_DE_erm)
+write.csv(ED_Fig6,file='../Figure_Results_Data/ED_Fig6.csv',row.names = FALSE)

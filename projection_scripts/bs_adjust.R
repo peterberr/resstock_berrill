@@ -16,7 +16,8 @@ cat("\014") # clear console
 
 
 library(dplyr)
-setwd("~/Yale Courses/Research/Final Paper/resstock_projections/projection_scripts")
+# define path to 'projection_scripts'
+setwd("~/projects/Yale/resstock_projections/projection_scripts")
 
 rm_dot2<-function(df) {
   cn<-names(df)
